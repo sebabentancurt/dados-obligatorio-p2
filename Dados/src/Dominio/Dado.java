@@ -10,5 +10,25 @@ package Dominio;
  * @author Mateo
  */
 public class Dado {
+    private int numero;
+    int max = 6;
+    int min = 1;
+    int rango = max - min + 1;
     
+    public Dado(){
+        int random = (int) (Math.random()* rango) + min;
+        this.setNumero(random);
+    }
+    
+    public Dado(int unNumero){
+        this.setNumero(unNumero);
+    }
+    
+    public void setNumero(int unNumero){
+        numero = unNumero;
+    }
+    
+    public int getNumero(){
+        return numero;
+    }
 }
