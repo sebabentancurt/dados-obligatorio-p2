@@ -11,4 +11,21 @@ package Interfaz;
  */
 public class Consola {
     
+    public void saludar(){
+        
+        System.out.println("BIENVENIDO A DADOS!");
+        }
+    
+    public void imprimirMenu(){    
+        
+        System.out.println("MENÚ:");
+        System.out.println("1.REGISTRAR JUGADOR");
+        System.out.println("2.JUGAR");
+        System.out.println("3.VER RANKING");
+        System.out.println("4.SALIR");
+    }
+    
+    public void pedirMenu(){
+    
+    }
 }

@@ -1,5 +1,7 @@
 package Logica;
 
+import Interfaz.Consola;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,6 +19,10 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Consola consola = new Consola();
+        consola.saludar();
+        consola.imprimirMenu();
+        consola.pedirMenu();
     }
     
 }
