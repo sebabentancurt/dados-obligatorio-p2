@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Mateo
  */
 public class Sistema {
-     public ArrayList<Jugador> listaJugadores;
+    public ArrayList<Jugador> listaJugadores;
 
     public Sistema() {
         listaJugadores = new ArrayList<Jugador>();

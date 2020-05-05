@@ -10,5 +10,5 @@ package Logica;
  * @author Mateo
  */
 public class Partida {
-    
+
 }
