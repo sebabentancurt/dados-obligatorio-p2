@@ -5,10 +5,25 @@
  */
 package Logica;
 
+import Dominio.Jugador;
+import java.util.ArrayList;
+
 /**
  *
  * @author Mateo
  */
 public class Sistema {
-    
+     public ArrayList<Jugador> listaJugadores;
+
+    public Sistema() {
+        listaJugadores = new ArrayList<Jugador>();
+    }
+
+    public ArrayList<Jugador> getListaJugadores() {
+        return listaJugadores;
+    }
+
+    public void agregarJugador(Jugador unJugador) {
+        this.getListaJugadores().add(unJugador);
+    }
 }
