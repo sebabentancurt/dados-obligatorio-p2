@@ -12,14 +12,14 @@ import java.util.Scanner;
  * @author Mateo
  */
 public class Consola {
-
-    public void saludar() {
-
+    
+    public void saludar(){
+        
         System.out.println("BIENVENIDO A DADOS!");
-    }
-
-    public void menu() {
-
+        }
+    
+    public void imprimirMenu(){    
+        
         System.out.println("MENÚ:");
         System.out.println("1.REGISTRAR JUGADOR");
         System.out.println("2.JUGAR");
@@ -54,5 +54,9 @@ public class Consola {
                 menu();
 
         }
+    }
+    
+    public void pedirMenu(){
+    
     }
 }

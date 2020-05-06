@@ -14,21 +14,21 @@ public class Dado {
     int max = 6;
     int min = 1;
     int rango = max - min + 1;
-    
-    public Dado(){
-        int random = (int) (Math.random()* rango) + min;
+
+    public Dado() {
+        int random = (int) (Math.random() * rango) + min;
         this.setNumero(random);
     }
-    
-    public Dado(int unNumero){
+
+    public Dado(int unNumero) {
         this.setNumero(unNumero);
     }
-    
-    public void setNumero(int unNumero){
+
+    public void setNumero(int unNumero) {
         numero = unNumero;
     }
-    
-    public int getNumero(){
+
+    public int getNumero() {
         return numero;
     }
 }
