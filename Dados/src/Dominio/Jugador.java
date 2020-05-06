@@ -63,7 +63,7 @@ public class Jugador {
     }
 
     public void setAlias(String alias) {
-        alias = alias;
+        this.alias = alias;
     }
 
     public void setPartidasJugadas(int cantPartidasJugadas) {
