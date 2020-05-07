@@ -13,8 +13,17 @@ import java.util.Scanner;
  */
 public class Consola {
 
-    public void saludar() {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
+    public void saludar() {
         System.out.println("BIENVENIDO A DADOS!");
     }
 
@@ -54,5 +63,40 @@ public class Consola {
                 menu();
 
         }
+    }
+
+
+    public void printGreen(String value){
+        System.out.print(ANSI_GREEN + value + ANSI_RESET);
+    }
+
+    public void printRed(String value){
+        System.out.print(ANSI_RED + value + ANSI_RESET);
+    }
+
+    public void print(String value){
+        System.out.print(value);
+    }
+
+    public void println(String value){
+        System.out.println(value);
+    }
+
+    public String addColor(String value, String color){
+        String prefix = "";
+        switch (color) {
+            case "red":
+                    prefix = ANSI_RED;
+                break;
+            case "blue":
+                    prefix = ANSI_BLUE;
+                break;
+            case "green":
+                prefix = ANSI_GREEN;
+            break;
+            default:
+                break;
+        }
+        return prefix + value + ANSI_RESET;
     }
 }
