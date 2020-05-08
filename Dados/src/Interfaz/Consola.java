@@ -5,6 +5,8 @@
  */
 package Interfaz;
 
+import Dominio.Jugador;
+import Logica.Sistema;
 import java.util.Scanner;
 
 /**
@@ -27,7 +29,7 @@ public class Consola {
         System.out.println("BIENVENIDO A DADOS!");
     }
 
-    public void menu() {
+    public void menu(Sistema unSistema) {
 
         System.out.println("MENÚ:");
         System.out.println("1.REGISTRAR JUGADOR");
@@ -43,7 +45,7 @@ public class Consola {
             case 1:
                 //CODIGO ACA
                 System.out.println("REGISTRAR UN JUGADOR NUEVO!");
-                //registroJugadores();
+                registroJugador(unSistema);
                 break;
             case 2:
                 //CODIGO ACA
@@ -60,9 +62,25 @@ public class Consola {
                 break;
             default:
                 System.out.println("ERROR, VUELVA A SELECCIONAR");
-                menu();
+                menu(unSistema);
 
         }
+    }
+    
+    public void registroJugador(Sistema unSistema){
+        Scanner in = new Scanner(System.in);
+        
+        System.out.println("REGISTRO DE JUGADOR:");
+        System.out.println("Ingrese nombre");
+        String nombre = in.nextLine();
+        System.out.println("Ingrese edad");
+        int edad = in.nextInt();
+        in.nextLine();
+        System.out.println("Ingrese alias");
+        String alias = in.nextLine();
+        
+        Jugador j = new Jugador(nombre, edad, alias);
+        unSistema.agregarJugador(j);
     }
 
 
