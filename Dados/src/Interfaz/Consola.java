@@ -26,7 +26,7 @@ public class Consola {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public void saludar() {
-        System.out.println("BIENVENIDO A DADOS!");
+        printGreen("BIENVENIDO A DADOS!");
     }
 
     public void menu(Sistema unSistema) {
@@ -43,9 +43,8 @@ public class Consola {
         respuesta = in.nextInt();
         switch (respuesta) {
             case 1:
-                //CODIGO ACA
-                System.out.println("REGISTRAR UN JUGADOR NUEVO!");
                 registroJugador(unSistema);
+                menu(unSistema);
                 break;
             case 2:
                 //CODIGO ACA
@@ -61,7 +60,7 @@ public class Consola {
                 System.out.println("GRACIAS POR JUGAR, HASTA LA VUELTA ;)");
                 break;
             default:
-                System.out.println("ERROR, VUELVA A SELECCIONAR");
+                printRed("ERROR, VUELVA A SELECCIONAR");
                 menu(unSistema);
 
         }
@@ -70,7 +69,7 @@ public class Consola {
     public void registroJugador(Sistema unSistema){
         Scanner in = new Scanner(System.in);
         
-        System.out.println("REGISTRO DE JUGADOR:");
+        printGreen("REGISTRO DE JUGADOR:");
         System.out.println("Ingrese nombre");
         String nombre = in.nextLine();
         System.out.println("Ingrese edad");
@@ -81,15 +80,20 @@ public class Consola {
         
         Jugador j = new Jugador(nombre, edad, alias);
         unSistema.agregarJugador(j);
+        printGreen(j.getAlias() + " fue registrado con exito!");
+    }
+    
+    public void crearPartida(){
+    
     }
 
 
     public void printGreen(String value){
-        System.out.print(ANSI_GREEN + value + ANSI_RESET);
+        System.out.println(ANSI_GREEN + value + ANSI_RESET);
     }
 
     public void printRed(String value){
-        System.out.print(ANSI_RED + value + ANSI_RESET);
+        System.out.println(ANSI_RED + value + ANSI_RESET);
     }
 
     public void print(String value){
