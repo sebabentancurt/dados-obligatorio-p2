@@ -6,6 +6,7 @@
 package Interfaz;
 
 import Dominio.Jugador;
+import Logica.Partida;
 import Logica.Sistema;
 import java.util.Scanner;
 
@@ -65,10 +66,10 @@ public class Consola {
 
         }
     }
-    
-    public void registroJugador(Sistema unSistema){
+
+    public void registroJugador(Sistema unSistema) {
         Scanner in = new Scanner(System.in);
-        
+
         printGreen("REGISTRO DE JUGADOR:");
         System.out.println("Ingrese nombre");
         String nombre = in.nextLine();
@@ -77,45 +78,119 @@ public class Consola {
         in.nextLine();
         System.out.println("Ingrese alias");
         String alias = in.nextLine();
-        
+
         Jugador j = new Jugador(nombre, edad, alias);
         unSistema.agregarJugador(j);
         printGreen(j.getAlias() + " fue registrado con exito!");
     }
-    
-    public void crearPartida(){
-    
+
+    public void crearPartida(Sistema unSistema) {
+        Jugador[] jugadoresSeleccionados = seleccionarJugadores(unSistema);
+        String[] letrasSeleccionadas = seleccionarLetras();
+        boolean modoTest = consultaModoTest();
+        
+        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
+
     }
 
+    public Jugador[] seleccionarJugadores(Sistema unSistema) {
+        int seleccion;
+        Jugador rojo;
+        Jugador azul;
+        Jugador[] jugadoresSeleccionados = new Jugador[2];
+        Scanner in = new Scanner(System.in);
 
-    public void printGreen(String value){
+        imprimirListaJugadores(unSistema);
+
+        println("SELECCIONE JUGADOR ROJO");
+        seleccion = in.nextInt();
+        rojo = unSistema.getListaJugadores().get(seleccion - 1);
+        println("Jugador rojo: " + rojo);
+
+        println("SELECCIONE JUGADOR AZUL");
+        seleccion = in.nextInt();
+        azul = unSistema.getListaJugadores().get(seleccion - 1);
+        println("Jugador azul: " + azul);
+
+        jugadoresSeleccionados[0] = rojo;
+        jugadoresSeleccionados[1] = azul;
+
+        return jugadoresSeleccionados;
+    }
+
+    public void imprimirListaJugadores(Sistema unSistema) {
+        println("LISTA DE JUGADORES");
+        if (unSistema.getListaJugadores().isEmpty()) {
+            println("LISTA VACIA");
+        } else {
+            for (int i = 0; i < unSistema.getListaJugadores().size(); i++) {
+                println((i + 1) + ". " + unSistema.getListaJugadores().get(i));
+            }
+        }
+    }
+
+    public String[] seleccionarLetras() {
+        Scanner in = new Scanner(System.in);
+        String letraRojo;
+        String letraAzul;
+        String[] letrasSeleccionadas = new String[2];
+        
+        println("Ingrese letra jugador Rojo");
+        letraRojo = in.nextLine();
+        
+        println("Ingrese letra jugador Azul");
+        letraAzul = in.nextLine();
+        
+        letrasSeleccionadas[0] = letraRojo;
+        letrasSeleccionadas[1] = letraAzul;
+        
+        return letrasSeleccionadas;
+    }
+    
+    public boolean consultaModoTest(){
+        boolean modoTest = false;
+        String respuesta;
+        Scanner in = new Scanner (System.in);
+        
+        println("DESEA ACTIVAR MODO TEST? S/N");
+        respuesta = in.nextLine();
+        
+        if (respuesta.equals("S")){
+            modoTest = true;
+            println("MODO TEST ACTIVADO");
+        }
+        
+        return modoTest;
+    }
+
+    public void printGreen(String value) {
         System.out.println(ANSI_GREEN + value + ANSI_RESET);
     }
 
-    public void printRed(String value){
+    public void printRed(String value) {
         System.out.println(ANSI_RED + value + ANSI_RESET);
     }
 
-    public void print(String value){
+    public void print(String value) {
         System.out.print(value);
     }
 
-    public void println(String value){
+    public void println(String value) {
         System.out.println(value);
     }
 
-    public String addColor(String value, String color){
+    public String addColor(String value, String color) {
         String prefix = "";
         switch (color) {
             case "red":
-                    prefix = ANSI_RED;
+                prefix = ANSI_RED;
                 break;
             case "blue":
-                    prefix = ANSI_BLUE;
+                prefix = ANSI_BLUE;
                 break;
             case "green":
                 prefix = ANSI_GREEN;
-            break;
+                break;
             default:
                 break;
         }
