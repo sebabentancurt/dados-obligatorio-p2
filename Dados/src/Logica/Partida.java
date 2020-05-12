@@ -6,6 +6,8 @@
 package Logica;
 
 import Dominio.Jugador;
+import Dominio.Tablero;
+import Interfaz.Consola;
 
 /**
  *
@@ -17,14 +19,17 @@ public class Partida {
     private Jugador jugadorAzul;
     private String letraRojo;
     private String letraAzul;
-    public boolean modoTest;
+    private boolean modoTest;
+    private Tablero tablero;
 
-    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, String unaLetraRojo, String unaLetraAzul, boolean modoTest) {
+    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, String unaLetraRojo, String unaLetraAzul, boolean modoTest, Consola unaConsola) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
         this.setLetraRojo(unaLetraRojo);
         this.setLetraAzul(unaLetraAzul);
         this.setModoTest(modoTest);
+        this.setTablero(unaConsola);
+        
     }
     
     //Getters
@@ -49,6 +54,10 @@ public class Partida {
         return modoTest;
     }
     
+    public Tablero getTablero(){
+        return tablero;
+    }
+    
     //Setters
 
     public void setJugadorRojo(Jugador unJugador) {
@@ -69,6 +78,10 @@ public class Partida {
     
     public void setModoTest (boolean modoTest){
         this.modoTest = modoTest;
+    }
+    
+    public void setTablero (Consola unaConsola) {
+        this.tablero = new Tablero(unaConsola);
     }
 
 }
