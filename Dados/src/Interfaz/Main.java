@@ -1,6 +1,6 @@
 package Interfaz;
 
-import Dominio.Tablero;
+
 import Logica.Sistema;
 
 /*

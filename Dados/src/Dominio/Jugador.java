@@ -9,7 +9,7 @@ package Dominio;
  *
  * @author Mateo
  */
-public class Jugador {
+public class Jugador implements Comparable<Jugador>{
 
     private String nombre;
     private String alias;
@@ -82,7 +82,7 @@ public class Jugador {
     }
     
     public int compareTo(Jugador unJugador){
-        return (int) (this.getPartidasGanadas() - unJugador.getPartidasGanadas());
+        return (int) (unJugador.getPartidasGanadas() - this.getPartidasGanadas());
     }
 
     public boolean equals(Object obj) {
