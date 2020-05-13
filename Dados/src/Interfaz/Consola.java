@@ -54,8 +54,10 @@ public class Consola {
                 break;
             case 3:
                 //CODIGO ACA
-                System.out.println("ESTE ES EL RANKING");
-                //mostrarRanking();
+                System.out.println("RANKING JUGADORES");
+                unSistema.listaOrdenada();
+                imprimirListaJugadores(unSistema);
+                menu(unSistema);
                 break;
             case 4:
                 System.out.println("GRACIAS POR JUGAR, HASTA LA VUELTA ;)");
@@ -89,7 +91,7 @@ public class Consola {
         String[] letrasSeleccionadas = seleccionarLetras();
         boolean modoTest = consultaModoTest();
         
-        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
+        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest, this);
 
     }
 

@@ -7,6 +7,7 @@ package Logica;
 
 import Dominio.Jugador;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -25,5 +26,10 @@ public class Sistema {
 
     public void agregarJugador(Jugador unJugador) {
         this.getListaJugadores().add(unJugador);
+    }
+    
+    public ArrayList<Jugador> listaOrdenada(){
+        Collections.sort(this.getListaJugadores());
+        return this.getListaJugadores();
     }
 }

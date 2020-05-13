@@ -19,7 +19,8 @@ public class Jugador {
     private int partidasJugadas;
 
     /**
-     * Constructor 
+     * Constructor
+     *
      * @param nombre
      * @param edad
      * @param alias
@@ -52,7 +53,7 @@ public class Jugador {
     public int getPartidasGanadas() {
         return partidasGanadas;
     }
-    
+
     // ---------------- Setters ----------------- 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -74,12 +75,18 @@ public class Jugador {
         partidasGanadas = cantPartidasGanadas;
     }
 
-    /*
-     * @Override
-     * 
-     * public String toString() { return this.getAlias(); }
-     * 
-     * public boolean equals(Object obj) { return this.getAlias().equals(((Jugador)
-     * obj).getAlias()); }
-     */
+    @Override
+
+    public String toString() {
+        return this.getAlias() + " Partidas ganadas: " + this.getPartidasGanadas();
+    }
+    
+    public int compareTo(Jugador unJugador){
+        return (int) (this.getPartidasGanadas() - unJugador.getPartidasGanadas());
+    }
+
+    public boolean equals(Object obj) {
+        return this.getAlias().equals(((Jugador) obj).getAlias());
+    }
+
 }
