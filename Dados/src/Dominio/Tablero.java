@@ -63,36 +63,54 @@ public class Tablero {
      * @param color
      * @return
      */
-    public Boolean ingresarValor(int posicion, String letra, String color) {
-        Boolean ingresoValor = false;
-        int k = 1;
+    public Boolean ingresarLetra(int posicionIngreso, String letra, String color) {
+        Boolean ingresoLetra = false;
+        int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if ((k == posicion && posicionVacia(i,j,k))){
+                if ((posicionActual == posicionIngreso && posicionEstaVacia(i,j,posicionIngreso))){
                     matriz[i][j] = this.consola.addColor(letra, color);
-                    ingresoValor = true;
+                    ingresoLetra = true;
                 }
-                k++;
+                posicionActual++;
             }
         }
-        return ingresoValor;
+        return ingresoLetra;
     }
 
 
     /**
-     * Dada una coordenada (x,y) y un valor de la matriz indica si es vacia o no
+     * Dada una coordenada (x,y) y una posicion de la matriz indica si es vacia o no
      * @param fila
      * @param columna
      * @param valor
      * @return
      */
-    public Boolean posicionVacia(int fila, int columna, int valor) {
-        String match = this.consola.addColor(Integer.toString(valor), "green");
-        Boolean vacio = true;
+    public Boolean posicionEstaVacia(int fila, int columna, int posicion) {
+        String match = this.consola.addColor(Integer.toString(posicion), "green");
+        Boolean vacio = false;
         if (this.matriz[fila][columna].equals(match)) {
-            vacio = false;
+            vacio = true;
         }
         return vacio;
+    }
+
+    /**
+     * Indica si un tablero tiene alguna posicion vacia
+     * @return Boolean
+     */
+    public Boolean estaCompleto(){
+        Boolean completo = true;
+        int posicionActual = 1;
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (posicionEstaVacia(i,j,posicionActual)){
+                    completo = false;
+                }
+                posicionActual++;
+            }
+        }
+        return completo;
     }
 
 }
