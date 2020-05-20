@@ -29,59 +29,70 @@ public class Partida {
         this.setLetraAzul(unaLetraAzul);
         this.setModoTest(modoTest);
         this.setTablero(unaConsola);
-        
+
     }
-    
+
     //Getters
-    
-    public Jugador getJugadorRojo(){
+    public Jugador getJugadorRojo() {
         return jugadorRojo;
     }
-    
-    public Jugador getJugadorAzul(){
+
+    public Jugador getJugadorAzul() {
         return jugadorAzul;
     }
-    
-    public String getLetraRojo(){
+
+    public String getLetraRojo() {
         return letraRojo;
     }
-    
-    public String getLetraAzul(){
+
+    public String getLetraAzul() {
         return letraAzul;
     }
-    
-    public boolean getModoTest(){
+
+    public boolean getModoTest() {
         return modoTest;
     }
-    
-    public Tablero getTablero(){
+
+    public Tablero getTablero() {
         return tablero;
     }
-    
-    //Setters
 
+    //Setters
     public void setJugadorRojo(Jugador unJugador) {
         this.jugadorRojo = unJugador;
     }
-    
-    public void setJugadorAzul (Jugador unJugador){
+
+    public void setJugadorAzul(Jugador unJugador) {
         this.jugadorAzul = unJugador;
     }
-    
-    public void setLetraRojo (String unaLetra){
+
+    public void setLetraRojo(String unaLetra) {
         this.letraRojo = unaLetra;
     }
-    
-    public void setLetraAzul (String unaLetra) {
+
+    public void setLetraAzul(String unaLetra) {
         this.letraAzul = unaLetra;
     }
-    
-    public void setModoTest (boolean modoTest){
+
+    public void setModoTest(boolean modoTest) {
         this.modoTest = modoTest;
     }
-    
-    public void setTablero (Consola unaConsola) {
+
+    public void setTablero(Consola unaConsola) {
         this.tablero = new Tablero(unaConsola);
+    }
+
+    public void jugar() {
+        boolean abandono = false;
+        while(!this.getTablero().estaCompleto() || abandono){
+            //solicitarRojo()
+            //verificarRojo()
+            //aplicarRojo()
+            
+            //solicitarAzul()
+            //verificarAzul()
+            //aplicarAzul()
+        }
     }
 
 }
