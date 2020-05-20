@@ -23,7 +23,8 @@ public class Main {
         Consola consola = new Consola();
         consola.saludar();
         consola.menu(s);
-        
+
+
         /*
         Tablero tablero = new Tablero(consola);
         tablero.mostrar();

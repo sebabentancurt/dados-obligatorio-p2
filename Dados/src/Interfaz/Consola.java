@@ -36,16 +36,27 @@ public class Consola {
         respuesta = in.nextInt();
         switch (respuesta) {
             case 1:
-                registroJugador(unSistema);
+                unSistema.registroJugador();
                 menu(unSistema);
                 break;
             case 2:
-                //CODIGO ACA
-                System.out.println("COMENZAR PARTIDA!");
+                Consola.printGreen("COMENZAR PARTIDA!");
+                
+
+                Consola.printGreen("Seleccione el jugador rojo");
+                imprimirListaJugadores(unSistema);
+                Consola.printGreen("Ingrese letra que lo representará");
+                String letraRojo = leerLetra().toUpperCase();
+
+                Consola.printGreen("Seleccione el jugador azul");
+                imprimirListaJugadores(unSistema);
+                Consola.printGreen("Ingrese letra que lo representará");
+                String letraAzul = leerLetra().toUpperCase();
+                
+
                 //partida();
                 break;
             case 3:
-                //CODIGO ACA
                 System.out.println("RANKING JUGADORES");
                 unSistema.listaOrdenada();
                 imprimirListaJugadores(unSistema);
@@ -61,21 +72,50 @@ public class Consola {
         }
     }
 
-    public void registroJugador(Sistema unSistema) {
-        Scanner in = new Scanner(System.in);
+    public static String leerString(String message){
+        Scanner scan = new Scanner(System.in);
+        System.out.println(message);
+        while (!scan.hasNextLine()) 
+        {
+            Consola.printRed("Entrada no es un texto. Intente nuevamente.");
+  
+        }
+        return scan.nextLine();
+    }
 
-        printGreen("REGISTRO DE JUGADOR:");
-        System.out.println("Ingrese nombre");
-        String nombre = in.nextLine();
-        System.out.println("Ingrese edad");
-        int edad = in.nextInt();
-        in.nextLine();
-        System.out.println("Ingrese alias");
-        String alias = in.nextLine();
+    public static Integer leerInt(String message){
+        Scanner scan = new Scanner(System.in);
+        System.out.println(message);
+        
+        while (!scan.hasNextInt()) 
+        {
+            Consola.printRed("Entrada no es un entero. Intente nuevamente.");
+            scan.next();
+        }
+        return scan.nextInt();
+    }
 
-        Jugador j = new Jugador(nombre, edad, alias);
-        unSistema.agregarJugador(j);
-        printGreen(j.getAlias() + " fue registrado con exito!");
+    public static String leerLetra(){
+        Scanner scan = new Scanner(System.in);
+        
+        while (!scan.hasNext("[a-zA-Z]")) 
+        {
+            Consola.printRed("Entrada no es una letra. Intente nuevamente.");
+            scan.next();
+        }
+        return scan.nextLine();
+    }
+
+    public static Integer leerOpcion(String message){
+        Scanner scan = new Scanner(System.in);
+        System.out.println(message);
+        
+        while (!scan.hasNextInt()) 
+        {
+            Consola.printRed("Entrada no es un entero. Intente nuevamente.");
+            scan.next();
+        }
+        return scan.nextInt();
     }
 
     public void crearPartida(Sistema unSistema) {
@@ -176,19 +216,19 @@ public class Consola {
         }
     }
 
-    public void printGreen(String value) {
+    public static void printGreen(String value) {
         System.out.println(Helper.addColorToString(value, "green"));
     }
 
-    public void printRed(String value) {
+    public static void printRed(String value) {
         System.out.println(Helper.addColorToString(value, "red"));
     }
 
-    public void print(String value) {
+    public static void print(String value) {
         System.out.print(value);
     }
 
-    public void println(String value) {
+    public static void println(String value) {
         System.out.println(value);
     }
 

@@ -80,8 +80,8 @@ public class Partida {
         this.modoTest = modoTest;
     }
     
-    public void setTablero (Consola unaConsola) {
-        this.tablero = new Tablero(unaConsola);
+    public void setTablero () {
+        this.tablero = new Tablero();
     }
 
 }
