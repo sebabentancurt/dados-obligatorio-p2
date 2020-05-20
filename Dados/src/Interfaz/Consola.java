@@ -48,9 +48,12 @@ public class Consola {
                 menu(unSistema);
                 break;
             case 2:
-                //CODIGO ACA
-                System.out.println("COMENZAR PARTIDA!");
-                //partida();
+                if (unSistema.getListaJugadores().size() > 1) {
+                    crearPartida(unSistema);
+                } else {
+                    printRed("Debe registrarse al menos 2 jugadores");
+                }
+                menu(unSistema);
                 break;
             case 3:
                 //CODIGO ACA
@@ -82,22 +85,28 @@ public class Consola {
         String alias = in.nextLine();
 
         Jugador j = new Jugador(nombre, edad, alias);
-        unSistema.agregarJugador(j);
-        printGreen(j.getAlias() + " fue registrado con exito!");
+
+        if (unSistema.existeJugador(j)) {
+            printRed("Ya existe jugador con mismo alias");
+        } else {
+            unSistema.agregarJugador(j);
+            printGreen(j.getAlias() + " fue registrado con exito!");
+        }
     }
 
     public void crearPartida(Sistema unSistema) {
         Jugador[] jugadoresSeleccionados = seleccionarJugadores(unSistema);
-        String[] letrasSeleccionadas = seleccionarLetras();
+        char[] letrasSeleccionadas = seleccionarLetras();
         boolean modoTest = consultaModoTest();
-        
+
         Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest, this);
         partida.jugar();
 
     }
 
     public Jugador[] seleccionarJugadores(Sistema unSistema) {
-        int seleccion;
+        int seleccionRojo = -1;
+        int seleccionAzul = -1;
         Jugador rojo;
         Jugador azul;
         Jugador[] jugadoresSeleccionados = new Jugador[2];
@@ -106,13 +115,17 @@ public class Consola {
         imprimirListaJugadores(unSistema);
 
         println("SELECCIONE JUGADOR ROJO");
-        seleccion = in.nextInt();
-        rojo = unSistema.getListaJugadores().get(seleccion - 1);
+        while (seleccionRojo < 1 || seleccionRojo > unSistema.getListaJugadores().size()) {
+            seleccionRojo = in.nextInt();
+        }
+        rojo = unSistema.getListaJugadores().get(seleccionRojo - 1);
         println("Jugador rojo: " + rojo);
 
         println("SELECCIONE JUGADOR AZUL");
-        seleccion = in.nextInt();
-        azul = unSistema.getListaJugadores().get(seleccion - 1);
+        while (seleccionAzul < 1 || seleccionAzul > unSistema.getListaJugadores().size() || seleccionAzul == seleccionRojo) {
+            seleccionAzul = in.nextInt();
+        }
+        azul = unSistema.getListaJugadores().get(seleccionAzul - 1);
         println("Jugador azul: " + azul);
 
         jugadoresSeleccionados[0] = rojo;
@@ -124,7 +137,8 @@ public class Consola {
     public void imprimirListaJugadores(Sistema unSistema) {
         println("LISTA DE JUGADORES");
         if (unSistema.getListaJugadores().isEmpty()) {
-            println("LISTA VACIA");
+            printRed("LISTA VACIA");
+            println("registre al menos 2 jugadores");
         } else {
             for (int i = 0; i < unSistema.getListaJugadores().size(); i++) {
                 println((i + 1) + ". " + unSistema.getListaJugadores().get(i));
@@ -132,37 +146,43 @@ public class Consola {
         }
     }
 
-    public String[] seleccionarLetras() {
+    public char[] seleccionarLetras() {
         Scanner in = new Scanner(System.in);
-        String letraRojo;
-        String letraAzul;
-        String[] letrasSeleccionadas = new String[2];
+        char letraRojo = '1';
+        char letraAzul = '2';
+        char[] letrasSeleccionadas = new char[2];
+
+        while (!Character.isLetter(letraRojo)) {
+            println("Ingrese letra jugador Rojo");
+        letraRojo = Character.toUpperCase(in.nextLine().charAt(0));
+        }
         
-        println("Ingrese letra jugador Rojo");
-        letraRojo = in.nextLine();
-        
+        while (!Character.isLetter(letraAzul)) {
         println("Ingrese letra jugador Azul");
-        letraAzul = in.nextLine();
-        
+        letraAzul = Character.toUpperCase(in.nextLine().charAt(0));
+        }
+
         letrasSeleccionadas[0] = letraRojo;
         letrasSeleccionadas[1] = letraAzul;
-        
+
         return letrasSeleccionadas;
     }
-    
-    public boolean consultaModoTest(){
+
+    public boolean consultaModoTest() {
         boolean modoTest = false;
-        String respuesta;
-        Scanner in = new Scanner (System.in);
-        
+        String respuesta = "";
+        Scanner in = new Scanner(System.in);
+
         println("DESEA ACTIVAR MODO TEST? S/N");
-        respuesta = in.nextLine();
-        
-        if (respuesta.equals("S")){
+        while (!respuesta.equalsIgnoreCase("S") && !respuesta.equalsIgnoreCase("N")) {
+            respuesta = in.nextLine();
+        }
+
+        if (respuesta.equals("S")) {
             modoTest = true;
             println("MODO TEST ACTIVADO");
         }
-        
+
         return modoTest;
     }
 

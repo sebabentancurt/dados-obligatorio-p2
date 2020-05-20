@@ -17,12 +17,12 @@ public class Partida {
 
     private Jugador jugadorRojo;
     private Jugador jugadorAzul;
-    private String letraRojo;
-    private String letraAzul;
+    private char letraRojo;
+    private char letraAzul;
     private boolean modoTest;
     private Tablero tablero;
 
-    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, String unaLetraRojo, String unaLetraAzul, boolean modoTest, Consola unaConsola) {
+    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, char unaLetraRojo, char unaLetraAzul, boolean modoTest, Consola unaConsola) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
         this.setLetraRojo(unaLetraRojo);
@@ -41,11 +41,11 @@ public class Partida {
         return jugadorAzul;
     }
 
-    public String getLetraRojo() {
+    public char getLetraRojo() {
         return letraRojo;
     }
 
-    public String getLetraAzul() {
+    public char getLetraAzul() {
         return letraAzul;
     }
 
@@ -66,11 +66,11 @@ public class Partida {
         this.jugadorAzul = unJugador;
     }
 
-    public void setLetraRojo(String unaLetra) {
+    public void setLetraRojo(char unaLetra) {
         this.letraRojo = unaLetra;
     }
 
-    public void setLetraAzul(String unaLetra) {
+    public void setLetraAzul(char unaLetra) {
         this.letraAzul = unaLetra;
     }
 
