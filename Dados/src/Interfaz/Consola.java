@@ -6,8 +6,10 @@
 package Interfaz;
 
 import Dominio.Jugador;
+import Logica.Helper;
 import Logica.Partida;
 import Logica.Sistema;
+import Dominio.Tablero;
 import java.util.Scanner;
 
 /**
@@ -15,16 +17,6 @@ import java.util.Scanner;
  * @author Mateo
  */
 public class Consola {
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
     public void saludar() {
         printGreen("BIENVENIDO A DADOS!");
@@ -165,12 +157,31 @@ public class Consola {
         return modoTest;
     }
 
+    /**
+     * Imprime la matriz formateada
+     */
+    public void mostrarTablero(String[][] matriz) {
+        int k = 1;
+        for (int i = 0; i < Tablero.FILAS; i++) {
+            for (int j = 0; j < Tablero.COLUMNAS; j++) {
+                this.print(matriz[i][j]);
+                if ((k >= 10)){
+                    this.print("    ");
+                }else {
+                    this.print("     ");
+                }
+                k++;
+            }
+            this.println("");
+        }
+    }
+
     public void printGreen(String value) {
-        System.out.println(ANSI_GREEN + value + ANSI_RESET);
+        System.out.println(Helper.addColorToString(value, "green"));
     }
 
     public void printRed(String value) {
-        System.out.println(ANSI_RED + value + ANSI_RESET);
+        System.out.println(Helper.addColorToString(value, "red"));
     }
 
     public void print(String value) {
@@ -181,21 +192,5 @@ public class Consola {
         System.out.println(value);
     }
 
-    public String addColor(String value, String color) {
-        String prefix = "";
-        switch (color) {
-            case "red":
-                prefix = ANSI_RED;
-                break;
-            case "blue":
-                prefix = ANSI_BLUE;
-                break;
-            case "green":
-                prefix = ANSI_GREEN;
-                break;
-            default:
-                break;
-        }
-        return prefix + value + ANSI_RESET;
-    }
+
 }
