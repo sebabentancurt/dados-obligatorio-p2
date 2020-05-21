@@ -32,4 +32,8 @@ public class Sistema {
         Collections.sort(this.getListaJugadores());
         return this.getListaJugadores();
     }
+    
+    public boolean existeJugador(Jugador unJugador){
+        return this.getListaJugadores().contains(unJugador);
+    }
 }
