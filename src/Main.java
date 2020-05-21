@@ -1,14 +1,17 @@
-import logica.Sistema;
-
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 /**
  *
  * @author Mateo
  */
+
+
+import logica.Sistema;
+import interfaz.Consola;
+
 public class Main {
 
     /**
@@ -19,7 +22,8 @@ public class Main {
         Sistema s = new Sistema();
         Consola consola = new Consola();
         consola.saludar();
-        consola.menu(s);
+        consola.leerOpcion("message", 4, 5);
+        //consola.menu(s);
 
 
         /*

@@ -99,16 +99,31 @@ public class Consola {
         return scan.nextLine();
     }
 
-    public static Integer leerOpcion(String message){
+    /**
+     * Lee una opcion como Int entre rangos
+     * @param message
+     * @return
+     */
+    public static Integer leerOpcion(String message, Integer minOpcion, Integer maxOpcion){
         Scanner scan = new Scanner(System.in);
         System.out.println(message);
-        
-        while (!scan.hasNextInt()) 
+        Integer opcion = 0;
+        while (true) 
         {
-            Consola.printRed("Entrada no es un entero. Intente nuevamente.");
-            scan.next();
+            if(!scan.hasNextInt()){
+                Consola.printRed("Opción no es un entero. Intente nuevamente.");
+                scan.next();
+                continue;
+            }
+
+            opcion = scan.nextInt();
+            if(!(opcion >= minOpcion && opcion <= maxOpcion)){
+                Consola.printRed("Opción no valida. Intente nuevamente.");
+                continue;
+            }
+            break;
         }
-        return scan.nextInt();
+        return opcion;
     }
 
     public void crearPartida(Sistema unSistema) {
@@ -121,41 +136,41 @@ public class Consola {
 
     }
 
+    /**
+     * Retorna dos jugadores seleccionados de la lista completa de jugadores
+     * @param unSistema
+     * @return
+     */
     public Jugador[] seleccionarJugadores(Sistema unSistema) {
-        int seleccionRojo = -1;
-        int seleccionAzul = -1;
-        Jugador rojo;
-        Jugador azul;
+
         Jugador[] jugadoresSeleccionados = new Jugador[2];
-        Scanner in = new Scanner(System.in);
 
         imprimirListaJugadores(unSistema);
 
-        println("SELECCIONE JUGADOR ROJO");
-        while (seleccionRojo < 1 || seleccionRojo > unSistema.getListaJugadores().size()) {
-            seleccionRojo = in.nextInt();
-        }
-        rojo = unSistema.getListaJugadores().get(seleccionRojo - 1);
-        println("Jugador rojo: " + rojo);
+        Integer seleccionRojo = Consola.leerOpcion("SELECCIONE JUGADOR ROJO", 1, unSistema.getListaJugadores().size());
+        Jugador jugadorRojo = unSistema.getListaJugadores().get(seleccionRojo - 1);
 
-        println("SELECCIONE JUGADOR AZUL");
-        while (seleccionAzul < 1 || seleccionAzul > unSistema.getListaJugadores().size() || seleccionAzul == seleccionRojo) {
-            seleccionAzul = in.nextInt();
+        Integer seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
+        while (seleccionRojo.equals(seleccionAzul)) {
+            Consola.printRed("El jugador ya ha sido seleccionado. Intente nuevamente");
+            seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
         }
-        azul = unSistema.getListaJugadores().get(seleccionAzul - 1);
-        println("Jugador azul: " + azul);
+        Jugador jugadorAzul = unSistema.getListaJugadores().get(seleccionRojo - 1);
 
-        jugadoresSeleccionados[0] = rojo;
-        jugadoresSeleccionados[1] = azul;
+        jugadoresSeleccionados[0] = jugadorRojo;
+        jugadoresSeleccionados[1] = jugadorAzul;
 
         return jugadoresSeleccionados;
     }
 
+    /**
+     * Imprime la lista de jugadores de no ser vacia
+     * @param unSistema
+     */
     public void imprimirListaJugadores(Sistema unSistema) {
-        println("LISTA DE JUGADORES");
+        printGreen("LISTA DE JUGADORES");
         if (unSistema.getListaJugadores().isEmpty()) {
             printRed("LISTA VACIA");
-            println("registre al menos 2 jugadores");
         } else {
             for (int i = 0; i < unSistema.getListaJugadores().size(); i++) {
                 println((i + 1) + ". " + unSistema.getListaJugadores().get(i));
