@@ -17,12 +17,12 @@ public class Partida {
 
     private Jugador jugadorRojo;
     private Jugador jugadorAzul;
-    private char letraRojo;
-    private char letraAzul;
+    private String letraRojo;
+    private String letraAzul;
     private boolean modoTest;
     private Tablero tablero;
 
-    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, char unaLetraRojo, char unaLetraAzul, boolean modoTest) {
+    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, String unaLetraRojo, String unaLetraAzul, boolean modoTest) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
         this.setLetraRojo(unaLetraRojo);

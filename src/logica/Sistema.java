@@ -44,16 +44,12 @@ public class Sistema {
 
         Jugador jugador = new Jugador(nombre, edad, alias);
 
-        Jugador j = new Jugador(nombre, edad, alias);
-
-        if (this.existeJugador(j)) {
+        if (this.existeJugador(jugador)) {
             Consola.printRed("Ya existe jugador con mismo alias");
         } else {
-            this.agregarJugador(j);
-            Consola.printGreen(j.getAlias() + " fue registrado con exito!");
+            this.agregarJugador(jugador);
+            Consola.printGreen(jugador.getAlias() + " fue registrado con exito!");
         }
-
-        Consola.printGreen(jugador.getAlias() + " fue registrado con exito!");
     }
 
     /*public void comenzarPartida() {

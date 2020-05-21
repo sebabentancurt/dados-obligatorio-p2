@@ -44,7 +44,7 @@ public class Consola {
                 if (unSistema.getListaJugadores().size() > 1) {
                     crearPartida(unSistema);
                 } else {
-                    printRed("Debe registrarse al menos 2 jugadores");
+                    printRed("Debe registrar al menos 2 jugadores para comenzar el juego.");
                 }
                 menu(unSistema);
                 break;
@@ -67,7 +67,7 @@ public class Consola {
 
     public static String leerString(String message){
         Scanner scan = new Scanner(System.in);
-        System.out.println(message);
+        Consola.printGreen(message);
         while (!scan.hasNextLine()) 
         {
             Consola.printRed("Entrada no es un texto. Intente nuevamente.");
@@ -78,7 +78,7 @@ public class Consola {
 
     public static Integer leerInt(String message){
         Scanner scan = new Scanner(System.in);
-        System.out.println(message);
+        Consola.printGreen(message);
         
         while (!scan.hasNextInt()) 
         {
@@ -88,9 +88,10 @@ public class Consola {
         return scan.nextInt();
     }
 
-    public static String leerLetra(){
+    public static String leerLetra(String message){
         Scanner scan = new Scanner(System.in);
-        
+        Consola.printGreen(message);
+
         while (!scan.hasNext("[a-zA-Z]")) 
         {
             Consola.printRed("Entrada no es una letra. Intente nuevamente.");
@@ -128,7 +129,7 @@ public class Consola {
 
     public void crearPartida(Sistema unSistema) {
         Jugador[] jugadoresSeleccionados = seleccionarJugadores(unSistema);
-        char[] letrasSeleccionadas = seleccionarLetras();
+        String[] letrasSeleccionadas = seleccionarLetras();
         boolean modoTest = consultaModoTest();
 
         Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
@@ -178,21 +179,18 @@ public class Consola {
         }
     }
 
-    public char[] seleccionarLetras() {
+    public String[] seleccionarLetras() {
         Scanner in = new Scanner(System.in);
-        char letraRojo = '1';
-        char letraAzul = '2';
-        char[] letrasSeleccionadas = new char[2];
+        String[] letrasSeleccionadas = new String[2];
 
-        while (!Character.isLetter(letraRojo)) {
-            println("Ingrese letra jugador Rojo");
-        letraRojo = Character.toUpperCase(in.nextLine().charAt(0));
-        }
+        String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo");
         
-        while (!Character.isLetter(letraAzul)) {
-        println("Ingrese letra jugador Azul");
-        letraAzul = Character.toUpperCase(in.nextLine().charAt(0));
+        String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
+        while(letraAzul.equals(letraRojo)){
+            Consola.printRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
+            letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
         }
+
 
         letrasSeleccionadas[0] = letraRojo;
         letrasSeleccionadas[1] = letraAzul;

@@ -22,8 +22,7 @@ public class Main {
         Sistema s = new Sistema();
         Consola consola = new Consola();
         consola.saludar();
-        consola.leerOpcion("message", 4, 5);
-        //consola.menu(s);
+        consola.menu(s);
 
 
         /*
