@@ -6,8 +6,10 @@
  */
 package logica;
 
+import dominio.Dado;
 import dominio.Jugador;
 import dominio.Tablero;
+import interfaz.Consola;
 
 /**
  *
@@ -82,17 +84,34 @@ public class Partida {
         this.tablero = new Tablero();
     }
 
-    public void jugar() {
-        boolean abandono = false;
-        while(!this.getTablero().estaCompleto() || abandono){
-            //solicitarRojo()
-            //verificarRojo()
-            //aplicarRojo()
-            
-            //solicitarAzul()
-            //verificarAzul()
-            //aplicarAzul()
-        }
+        public void jugar(Consola unaConsola) { 
+        boolean abandono = false; 
+        while (!this.getTablero().estaCompleto() || abandono) { 
+ 
+            unaConsola.mostrarTablero(tablero.getMatriz()); 
+ 
+            //solicitarRojo() 
+            //verificarRojo() 
+            //aplicarRojo() 
+            //solicitarAzul() 
+            //verificarAzul() 
+            //aplicarAzul() 
+        } 
     }
+        
+     public void SolicitarRojo() { 
+        Dado[] dados = tirarDados(); 
+         
+    } 
+ 
+    public Dado[] tirarDados() { 
+        Dado[] dados = new Dado[5]; 
+ 
+        for (int i = 0; i < dados.length; i++) { 
+            dados[i] = new Dado(); 
+        } 
+ 
+        return dados; 
+    } 
 
 }

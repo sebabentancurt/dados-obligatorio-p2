@@ -135,7 +135,7 @@ public class Consola {
         boolean modoTest = consultaModoTest();
 
         Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
-        partida.jugar();
+        partida.jugar(this);
 
     }
 
