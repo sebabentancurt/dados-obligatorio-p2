@@ -22,13 +22,13 @@ public class Partida {
     private boolean modoTest;
     private Tablero tablero;
 
-    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, char unaLetraRojo, char unaLetraAzul, boolean modoTest, Consola unaConsola) {
+    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, char unaLetraRojo, char unaLetraAzul, boolean modoTest) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
         this.setLetraRojo(unaLetraRojo);
         this.setLetraAzul(unaLetraAzul);
         this.setModoTest(modoTest);
-        this.setTablero(unaConsola);
+        this.setTablero();
 
     }
 

@@ -40,31 +40,14 @@ public class Consola {
                 menu(unSistema);
                 break;
             case 2:
-<<<<<<< HEAD
-                Consola.printGreen("COMENZAR PARTIDA!");
-                
-
-                Consola.printGreen("Seleccione el jugador rojo");
-                imprimirListaJugadores(unSistema);
-                Consola.printGreen("Ingrese letra que lo representará");
-                String letraRojo = leerLetra().toUpperCase();
-
-                Consola.printGreen("Seleccione el jugador azul");
-                imprimirListaJugadores(unSistema);
-                Consola.printGreen("Ingrese letra que lo representará");
-                String letraAzul = leerLetra().toUpperCase();
-                
-
-                //partida();
-=======
                 if (unSistema.getListaJugadores().size() > 1) {
                     crearPartida(unSistema);
                 } else {
                     printRed("Debe registrarse al menos 2 jugadores");
                 }
                 menu(unSistema);
->>>>>>> origin/mateo
                 break;
+                
             case 3:
                 System.out.println("RANKING JUGADORES");
                 unSistema.listaOrdenada();
@@ -132,7 +115,7 @@ public class Consola {
         char[] letrasSeleccionadas = seleccionarLetras();
         boolean modoTest = consultaModoTest();
 
-        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest, this);
+        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
         partida.jugar();
 
     }
