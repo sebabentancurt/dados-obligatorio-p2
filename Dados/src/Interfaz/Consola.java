@@ -115,7 +115,6 @@ public class Consola {
         return scan.nextLine();
     }
 
-<<<<<<< HEAD
     public static Integer leerOpcion(String message){
         Scanner scan = new Scanner(System.in);
         System.out.println(message);
@@ -126,16 +125,6 @@ public class Consola {
             scan.next();
         }
         return scan.nextInt();
-=======
-        Jugador j = new Jugador(nombre, edad, alias);
-
-        if (unSistema.existeJugador(j)) {
-            printRed("Ya existe jugador con mismo alias");
-        } else {
-            unSistema.agregarJugador(j);
-            printGreen(j.getAlias() + " fue registrado con exito!");
-        }
->>>>>>> origin/mateo
     }
 
     public void crearPartida(Sistema unSistema) {
