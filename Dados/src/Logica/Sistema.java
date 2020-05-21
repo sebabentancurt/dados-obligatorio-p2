@@ -6,6 +6,8 @@
 package Logica;
 
 import Dominio.Jugador;
+import Interfaz.Consola;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,13 +29,38 @@ public class Sistema {
     public void agregarJugador(Jugador unJugador) {
         this.getListaJugadores().add(unJugador);
     }
-    
-    public ArrayList<Jugador> listaOrdenada(){
+
+    public ArrayList<Jugador> listaOrdenada() {
         Collections.sort(this.getListaJugadores());
         return this.getListaJugadores();
     }
-    
+
+    public void registroJugador() {
+        Consola.printGreen("REGISTRO DE JUGADOR:");
+        String nombre = Consola.leerString("Ingrese nombre:");
+        int edad = Consola.leerInt("Ingrese edad");
+        String alias = Consola.leerString("Ingrese alias:");
+
+        Jugador jugador = new Jugador(nombre, edad, alias);
+
+        Jugador j = new Jugador(nombre, edad, alias);
+
+        if (this.existeJugador(j)) {
+            Consola.printRed("Ya existe jugador con mismo alias");
+        } else {
+            this.agregarJugador(j);
+            Consola.printGreen(j.getAlias() + " fue registrado con exito!");
+        }
+
+        Consola.printGreen(jugador.getAlias() + " fue registrado con exito!");
+    }
+
+    /*public void comenzarPartida() {
+        
+    }*/
+
     public boolean existeJugador(Jugador unJugador){
         return this.getListaJugadores().contains(unJugador);
     }
+
 }

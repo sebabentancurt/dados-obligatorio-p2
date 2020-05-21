@@ -77,9 +77,9 @@ public class Partida {
     public void setModoTest(boolean modoTest) {
         this.modoTest = modoTest;
     }
-
-    public void setTablero(Consola unaConsola) {
-        this.tablero = new Tablero(unaConsola);
+    
+    public void setTablero () {
+        this.tablero = new Tablero();
     }
 
     public void jugar() {
