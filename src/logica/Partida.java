@@ -79,39 +79,45 @@ public class Partida {
     public void setModoTest(boolean modoTest) {
         this.modoTest = modoTest;
     }
-    
-    public void setTablero () {
+
+    public void setTablero() {
         this.tablero = new Tablero();
     }
 
-        public void jugar(Consola unaConsola) { 
-        boolean abandono = false; 
-        while (!this.getTablero().estaCompleto() || abandono) { 
- 
-            unaConsola.mostrarTablero(tablero.getMatriz()); 
- 
+    public void jugar(Consola unaConsola) {
+        boolean abandono = false;
+        while (!this.getTablero().estaCompleto() || abandono) {
+
+            unaConsola.mostrarTablero(tablero.getMatriz());
+
             //solicitarRojo() 
             //verificarRojo() 
             //aplicarRojo() 
             //solicitarAzul() 
             //verificarAzul() 
             //aplicarAzul() 
-        } 
+        }
     }
-        
-     public void SolicitarRojo() { 
-        Dado[] dados = tirarDados(); 
-         
-    } 
- 
-    public Dado[] tirarDados() { 
-        Dado[] dados = new Dado[5]; 
- 
-        for (int i = 0; i < dados.length; i++) { 
-            dados[i] = new Dado(); 
-        } 
- 
-        return dados; 
-    } 
+
+    public void SolicitarRojo(Consola unaConsola) {
+        Dado[] dados = tirarDados(unaConsola);
+
+    }
+
+    public Dado[] tirarDados(Consola unaConsola) {
+        Dado[] dados = new Dado[5];
+
+        if (getModoTest()) {
+            for (int i = 0; i < dados.length; i++) {
+                dados[i] = new Dado(unaConsola.leerOpcion("Ingrese numero de dado", 1, 6));
+            }
+        } else {
+            for (int i = 0; i < dados.length; i++) {
+                dados[i] = new Dado();
+            }
+        }
+
+        return dados;
+    }
 
 }
