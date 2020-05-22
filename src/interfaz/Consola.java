@@ -6,12 +6,12 @@
  */
 package interfaz;
 
+import dominio.Dado;
 import dominio.Jugador;
 import dominio.Tablero;
 import helper.Color;
 import logica.Partida;
 import java.util.Scanner;
-
 
 import logica.Sistema;
 
@@ -50,7 +50,7 @@ public class Consola {
                 }
                 menu(unSistema);
                 break;
-                
+
             case 3:
                 System.out.println("RANKING JUGADORES");
                 unSistema.listaOrdenada();
@@ -67,35 +67,32 @@ public class Consola {
         }
     }
 
-    public static String leerString(String message){
+    public static String leerString(String message) {
         Scanner scan = new Scanner(System.in);
         Consola.printGreen(message);
-        while (!scan.hasNextLine()) 
-        {
+        while (!scan.hasNextLine()) {
             Consola.printRed("Entrada no es un texto. Intente nuevamente.");
-  
+
         }
         return scan.nextLine();
     }
 
-    public static Integer leerInt(String message){
+    public static Integer leerInt(String message) {
         Scanner scan = new Scanner(System.in);
         Consola.printGreen(message);
-        
-        while (!scan.hasNextInt()) 
-        {
+
+        while (!scan.hasNextInt()) {
             Consola.printRed("Entrada no es un entero. Intente nuevamente.");
             scan.next();
         }
         return scan.nextInt();
     }
 
-    public static String leerLetra(String message){
+    public static String leerLetra(String message) {
         Scanner scan = new Scanner(System.in);
         Consola.printGreen(message);
 
-        while (!scan.hasNext("[a-zA-Z]")) 
-        {
+        while (!scan.hasNext("[a-zA-Z]")) {
             Consola.printRed("Entrada no es una letra. Intente nuevamente.");
             scan.next();
         }
@@ -104,23 +101,23 @@ public class Consola {
 
     /**
      * Lee una opcion como Int entre rangos
+     *
      * @param message
      * @return
      */
-    public static Integer leerOpcion(String message, Integer minOpcion, Integer maxOpcion){
+    public static Integer leerOpcion(String message, Integer minOpcion, Integer maxOpcion) {
         Scanner scan = new Scanner(System.in);
         System.out.println(message);
         Integer opcion = 0;
-        while (true) 
-        {
-            if(!scan.hasNextInt()){
+        while (true) {
+            if (!scan.hasNextInt()) {
                 Consola.printRed("Opción no es un entero. Intente nuevamente.");
                 scan.next();
                 continue;
             }
 
             opcion = scan.nextInt();
-            if(!(opcion >= minOpcion && opcion <= maxOpcion)){
+            if (!(opcion >= minOpcion && opcion <= maxOpcion)) {
                 Consola.printRed("Opción no valida. Intente nuevamente.");
                 continue;
             }
@@ -141,6 +138,7 @@ public class Consola {
 
     /**
      * Retorna dos jugadores seleccionados de la lista completa de jugadores
+     *
      * @param unSistema
      * @return
      */
@@ -168,6 +166,7 @@ public class Consola {
 
     /**
      * Imprime la lista de jugadores de no ser vacia
+     *
      * @param unSistema
      */
     public void imprimirListaJugadores(Sistema unSistema) {
@@ -186,13 +185,12 @@ public class Consola {
         String[] letrasSeleccionadas = new String[2];
 
         String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo");
-        
+
         String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
-        while(letraAzul.equals(letraRojo)){
+        while (letraAzul.equals(letraRojo)) {
             Consola.printRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
             letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
         }
-
 
         letrasSeleccionadas[0] = letraRojo;
         letrasSeleccionadas[1] = letraAzul;
@@ -218,6 +216,15 @@ public class Consola {
         return modoTest;
     }
 
+    public void mostrarDados(Dado[] dados) {
+        print("base: " + dados[0].getNumero() + " ");
+
+        print("extras: ");
+        for (int i = 1; i < dados.length; i++) {
+            print(dados[i].getNumero() + " ");
+        }
+    }
+
     /**
      * Imprime la matriz formateada
      */
@@ -226,9 +233,9 @@ public class Consola {
         for (int i = 0; i < Tablero.FILAS; i++) {
             for (int j = 0; j < Tablero.COLUMNAS; j++) {
                 this.print(matriz[i][j]);
-                if ((k >= 10)){
+                if ((k >= 10)) {
                     this.print("    ");
-                }else {
+                } else {
                     this.print("     ");
                 }
                 k++;
@@ -252,6 +259,5 @@ public class Consola {
     public static void println(String value) {
         System.out.println(value);
     }
-
 
 }

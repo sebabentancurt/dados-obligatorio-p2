@@ -90,7 +90,7 @@ public class Partida {
 
             unaConsola.mostrarTablero(tablero.getMatriz());
 
-            //solicitarRojo() 
+            solicitarRojo(unaConsola); 
             //verificarRojo() 
             //aplicarRojo() 
             //solicitarAzul() 
@@ -99,8 +99,9 @@ public class Partida {
         }
     }
 
-    public void SolicitarRojo(Consola unaConsola) {
+    public void solicitarRojo(Consola unaConsola) {
         Dado[] dados = tirarDados(unaConsola);
+        unaConsola.mostrarDados(dados);
 
     }
 
