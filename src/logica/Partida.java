@@ -107,23 +107,36 @@ public class Partida {
     }
 
     public void pedirJugada(Consola unaConsola, ArrayList<Integer> dados, String unaLetra) {
-        boolean respuestaEsNum = true;
         unaConsola.mostrarDados(dados);
 
         String respuesta = unaConsola.leerString("Ingrese jugada");
-        String[] respuestaArray = respuesta.split(" ");
-        if (respuestaEsNum) {
-            ArrayList<Integer> jugada = new ArrayList<Integer>();
-            for (String num : respuestaArray) {
-                jugada.add(Integer.parseInt(num));
-            }
+        switch (respuesta) {
+            case "A":
+                //ayuda();
+                break;
+            case "P":
+                //pasarTurno();
+                break;
+            case "X":
+                //abandonar();
+                break;
+            default:
+                String[] respuestaArray = respuesta.split(" ");
 
-            if (verificarJugada(jugada, dados)) {
-                aplicarJugadaEnTablero(jugada, unaLetra);
-            } else {
-                pedirJugada(unaConsola, dados, unaLetra);
-            }
+                ArrayList<Integer> jugada = new ArrayList<Integer>();
+                for (String num : respuestaArray) {
+                    jugada.add(Integer.parseInt(num));
+                }
+
+                if (verificarJugada(jugada, dados)) {
+                    aplicarJugadaEnTablero(jugada, unaLetra);
+                } else {
+                    pedirJugada(unaConsola, dados, unaLetra);
+                }
+
+                break;
         }
+
     }
 
     public ArrayList<Integer> tirarDados(Consola unaConsola) {
@@ -149,7 +162,7 @@ public class Partida {
 
     public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados) {
         if (jugada.size() == 1 && jugada.contains(0)) {
-            return tablero.posicionEstaVacia(dados[0]);
+            return tablero.posicionEstaVacia(dados.get(0));
         } else {
             int total = dados.get(0);
             for (int i = 1; i < dados.size(); i++) {
@@ -159,7 +172,7 @@ public class Partida {
                 total += jugada.get(i);
             }
 
-            return tablero.posicionEstaVacia(total)
+            return tablero.posicionEstaVacia(total);
         }
     }
 
