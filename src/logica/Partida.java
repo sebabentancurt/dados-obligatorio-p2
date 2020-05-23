@@ -91,31 +91,38 @@ public class Partida {
 
             unaConsola.mostrarTablero(tablero.getMatriz());
 
-            solicitarRojo(unaConsola);
-            //verificarRojo() 
-            //aplicarRojo() 
-            //solicitarAzul() 
-            //verificarAzul() 
-            //aplicarAzul() 
+            unaConsola.printGreen("TURNO DE JUGADOR ROJO");
+            jugada(unaConsola, getLetraRojo());
+
+            unaConsola.mostrarTablero(tablero.getMatriz());
+
+            unaConsola.printGreen("TURNO DE JUGADOR AZUL");
+            jugada(unaConsola, getLetraAzul());
         }
     }
 
-    public void solicitarRojo(Consola unaConsola) {
+    public void jugada(Consola unaConsola, String unaLetra) {
         ArrayList<Integer> dados = tirarDados(unaConsola);
+        pedirJugada(unaConsola, dados, unaLetra);
+    }
 
+    public void pedirJugada(Consola unaConsola, ArrayList<Integer> dados, String unaLetra) {
+        boolean respuestaEsNum = true;
         unaConsola.mostrarDados(dados);
 
         String respuesta = unaConsola.leerString("Ingrese jugada");
         String[] respuestaArray = respuesta.split(" ");
-        ArrayList<Integer> jugada = new ArrayList<Integer>();
-        for (String num : respuestaArray) {
-            jugada.add(Integer.parseInt(num));
-        }
-        
-        if(verificarRojo(jugada, dados)){
-            //aplicarJugada();
-        }else{
-            solicitarRojo(unaConsola);
+        if (respuestaEsNum) {
+            ArrayList<Integer> jugada = new ArrayList<Integer>();
+            for (String num : respuestaArray) {
+                jugada.add(Integer.parseInt(num));
+            }
+
+            if (verificarJugada(jugada, dados)) {
+                aplicarJugadaEnTablero(jugada, unaLetra);
+            } else {
+                pedirJugada(unaConsola, dados, unaLetra);
+            }
         }
     }
 
@@ -132,6 +139,7 @@ public class Partida {
                 dados[i] = new Dado();
             }
         }
+
         for (int i = 0; i < dados.length; i++) {
             numDados.add(dados[i].getNumero());
         }
@@ -139,21 +147,28 @@ public class Partida {
         return numDados;
     }
 
-    public boolean verificarRojo(ArrayList<Integer> jugada, ArrayList<Integer> dados) {
+    public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados) {
         if (jugada.size() == 1 && jugada.contains(0)) {
             return tablero.posicionEstaVacia(dados[0]);
         } else {
             int total = dados.get(0);
-            for(Integer num : jugada){
-                if(!dados.contains(num)){
+            for (int i = 1; i < dados.size(); i++) {
+                if (!dados.contains(jugada.get(i))) {
                     return false;
                 }
-                total += num;
+                total += jugada.get(i);
             }
-            
+
             return tablero.posicionEstaVacia(total)
         }
-        
+    }
+
+    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, String unaLetra) {
+        int pos;
+        for (Integer num : jugada) {
+            pos = jugada.get(num);
+        }
+        boolean ingresar = tablero.ingresarLetra(num, unaLetra,)
     }
 
 }
