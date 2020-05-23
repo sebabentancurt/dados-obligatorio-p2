@@ -10,6 +10,7 @@ import dominio.Dado;
 import dominio.Jugador;
 import dominio.Tablero;
 import helper.Color;
+import java.util.ArrayList;
 import logica.Partida;
 import java.util.Scanner;
 
@@ -216,12 +217,12 @@ public class Consola {
         return modoTest;
     }
 
-    public void mostrarDados(Dado[] dados) {
-        print("base: " + dados[0].getNumero() + " ");
+    public void mostrarDados(ArrayList<Integer> dados) {
+        print("base: " + dados.get(0) + " ");
 
         print("extras: ");
-        for (int i = 1; i < dados.length; i++) {
-            print(dados[i].getNumero() + " ");
+        for (int i = 1; i < dados.size(); i++) {
+            print(dados.get(i) + " ");
         }
     }
 

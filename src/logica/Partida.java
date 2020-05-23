@@ -10,6 +10,7 @@ import dominio.Dado;
 import dominio.Jugador;
 import dominio.Tablero;
 import interfaz.Consola;
+import java.util.ArrayList;
 
 /**
  *
@@ -90,7 +91,7 @@ public class Partida {
 
             unaConsola.mostrarTablero(tablero.getMatriz());
 
-            solicitarRojo(unaConsola); 
+            solicitarRojo(unaConsola);
             //verificarRojo() 
             //aplicarRojo() 
             //solicitarAzul() 
@@ -100,13 +101,27 @@ public class Partida {
     }
 
     public void solicitarRojo(Consola unaConsola) {
-        Dado[] dados = tirarDados(unaConsola);
+        ArrayList<Integer> dados = tirarDados(unaConsola);
+
         unaConsola.mostrarDados(dados);
 
+        String respuesta = unaConsola.leerString("Ingrese jugada");
+        String[] respuestaArray = respuesta.split(" ");
+        ArrayList<Integer> jugada = new ArrayList<Integer>();
+        for (String num : respuestaArray) {
+            jugada.add(Integer.parseInt(num));
+        }
+        
+        if(verificarRojo(jugada, dados)){
+            //aplicarJugada();
+        }else{
+            solicitarRojo(unaConsola);
+        }
     }
 
-    public Dado[] tirarDados(Consola unaConsola) {
+    public ArrayList<Integer> tirarDados(Consola unaConsola) {
         Dado[] dados = new Dado[5];
+        ArrayList<Integer> numDados = new ArrayList();
 
         if (getModoTest()) {
             for (int i = 0; i < dados.length; i++) {
@@ -117,8 +132,28 @@ public class Partida {
                 dados[i] = new Dado();
             }
         }
+        for (int i = 0; i < dados.length; i++) {
+            numDados.add(dados[i].getNumero());
+        }
 
-        return dados;
+        return numDados;
+    }
+
+    public boolean verificarRojo(ArrayList<Integer> jugada, ArrayList<Integer> dados) {
+        if (jugada.size() == 1 && jugada.contains(0)) {
+            return tablero.posicionEstaVacia(dados[0]);
+        } else {
+            int total = dados.get(0);
+            for(Integer num : jugada){
+                if(!dados.contains(num)){
+                    return false;
+                }
+                total += num;
+            }
+            
+            return tablero.posicionEstaVacia(total)
+        }
+        
     }
 
 }
