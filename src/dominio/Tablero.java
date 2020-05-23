@@ -47,7 +47,7 @@ public class Tablero {
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if ((posicionActual == posicionIngreso && posicionEstaVacia(i,j,posicionIngreso))){
+                if ((posicionActual == posicionIngreso && coordenadaPosicionEstaVacia(i,j,posicionIngreso))){
                     matriz[i][j] = Color.addColorToString(letra, color);
                     ingresoLetra = true;
                 }
@@ -65,12 +65,35 @@ public class Tablero {
      * @param valor
      * @return
      */
-    public Boolean posicionEstaVacia(int fila, int columna, int posicion) {
+    public Boolean coordenadaPosicionEstaVacia(int fila, int columna, int posicion) {
         String match = Color.addColorToString(Integer.toString(posicion), "green");
         Boolean vacio = false;
         if (this.matriz[fila][columna].equals(match)) {
             vacio = true;
         }
+        return vacio;
+    }
+
+    /**
+     * Dada una posicion de la matriz indica si es vacia o no
+     * @param posicion
+     * @return
+     */
+    public Boolean posicionEstaVacia(int posicionIngreso) {
+        String match = Color.addColorToString(Integer.toString(posicionIngreso), "green");
+        Boolean vacio = false;
+        int posicionActual = 1;
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (posicionActual == posicionIngreso){
+                    if (this.matriz[i][j].equals(match)) {
+                        vacio = true;
+                    }
+                }
+                posicionActual++;
+            }
+        }
+
         return vacio;
     }
 
@@ -83,7 +106,7 @@ public class Tablero {
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if (Boolean.TRUE.equals(posicionEstaVacia(i,j,posicionActual))){
+                if (Boolean.TRUE.equals(coordenadaPosicionEstaVacia(i,j,posicionActual))){
                     completo = false;
                 }
                 posicionActual++;
