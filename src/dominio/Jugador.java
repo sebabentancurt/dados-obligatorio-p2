@@ -13,7 +13,7 @@ public class Jugador implements Comparable<Jugador>{
 
     private String nombre;
     private String alias;
-    private char letraParaJugar;
+    private String letraParaJugar;
     private int edad;
     private int partidasGanadas;
     private int partidasJugadas;
@@ -53,6 +53,10 @@ public class Jugador implements Comparable<Jugador>{
     public int getPartidasGanadas() {
         return partidasGanadas;
     }
+    
+    public String getLetraParaJugar(){
+        return letraParaJugar;
+    }
 
     // ---------------- Setters ----------------- 
     public void setNombre(String nombre) {
@@ -73,6 +77,10 @@ public class Jugador implements Comparable<Jugador>{
 
     public void setPartidasGanadas(int cantPartidasGanadas) {
         partidasGanadas = cantPartidasGanadas;
+    }
+    
+    public void setLetraParaJugar(String unaLetra){
+        letraParaJugar = unaLetra;
     }
 
     @Override

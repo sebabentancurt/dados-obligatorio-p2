@@ -20,16 +20,14 @@ public class Partida {
 
     private Jugador jugadorRojo;
     private Jugador jugadorAzul;
-    private String letraRojo;
-    private String letraAzul;
+    private int scoreRojo = 0;
+    private int scoreAzul = 0;
     private boolean modoTest;
     private Tablero tablero;
 
-    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, String unaLetraRojo, String unaLetraAzul, boolean modoTest) {
+    public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, boolean modoTest) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
-        this.setLetraRojo(unaLetraRojo);
-        this.setLetraAzul(unaLetraAzul);
         this.setModoTest(modoTest);
         this.setTablero();
 
@@ -42,14 +40,6 @@ public class Partida {
 
     public Jugador getJugadorAzul() {
         return jugadorAzul;
-    }
-
-    public String getLetraRojo() {
-        return letraRojo;
-    }
-
-    public String getLetraAzul() {
-        return letraAzul;
     }
 
     public boolean getModoTest() {
@@ -69,14 +59,6 @@ public class Partida {
         this.jugadorAzul = unJugador;
     }
 
-    public void setLetraRojo(String unaLetra) {
-        this.letraRojo = unaLetra;
-    }
-
-    public void setLetraAzul(String unaLetra) {
-        this.letraAzul = unaLetra;
-    }
-
     public void setModoTest(boolean modoTest) {
         this.modoTest = modoTest;
     }
@@ -89,24 +71,24 @@ public class Partida {
         boolean abandono = false;
         while (!this.getTablero().estaCompleto() || abandono) {
 
-            unaConsola.mostrarTablero(tablero.getMatriz());
+            unaConsola.mostrarTablero(getTablero().getMatriz());
 
             unaConsola.printGreen("TURNO DE JUGADOR ROJO");
-            jugada(unaConsola, getLetraRojo());
+            jugada(unaConsola, getJugadorRojo());
 
-            unaConsola.mostrarTablero(tablero.getMatriz());
+            unaConsola.mostrarTablero(getTablero().getMatriz());
 
             unaConsola.printGreen("TURNO DE JUGADOR AZUL");
-            jugada(unaConsola, getLetraAzul());
+            jugada(unaConsola, getJugadorAzul());
         }
     }
 
-    public void jugada(Consola unaConsola, String unaLetra) {
+    public void jugada(Consola unaConsola, Jugador unJugador) {
         ArrayList<Integer> dados = tirarDados(unaConsola);
-        pedirJugada(unaConsola, dados, unaLetra);
+        pedirJugada(unaConsola, dados, unJugador);
     }
 
-    public void pedirJugada(Consola unaConsola, ArrayList<Integer> dados, String unaLetra) {
+    public void pedirJugada(Consola unaConsola, ArrayList<Integer> dados, Jugador unJugador) {
         unaConsola.mostrarDados(dados);
 
         String respuesta = unaConsola.leerString("Ingrese jugada");
@@ -115,7 +97,7 @@ public class Partida {
                 //ayuda();
                 break;
             case "P":
-                //pasarTurno();
+                unaConsola.println("PASA DE TURNO");
                 break;
             case "X":
                 //abandonar();
@@ -129,9 +111,9 @@ public class Partida {
                 }
 
                 if (verificarJugada(jugada, dados)) {
-                    aplicarJugadaEnTablero(jugada, unaLetra);
+                    aplicarJugadaEnTablero(jugada, unJugador);
                 } else {
-                    pedirJugada(unaConsola, dados, unaLetra);
+                    pedirJugada(unaConsola, dados, unJugador);
                 }
 
                 break;
@@ -176,12 +158,18 @@ public class Partida {
         }
     }
 
-    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, String unaLetra) {
-        /*int pos;
+    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, Jugador unJugador) {
+        int pos = 0;
+        String color;
         for (Integer num : jugada) {
-            pos = jugada.get(num);
+            pos += jugada.get(num);
         }
-        boolean ingresar = tablero.ingresarLetra(num, unaLetra,)*/
+        if(unJugador.equals(jugadorRojo)){
+            color = "red";
+        }else{
+            color = "blue";
+        }        
+        boolean ingresar = tablero.ingresarLetra(pos, unJugador.getLetraParaJugar(),color);
     }
 
 }

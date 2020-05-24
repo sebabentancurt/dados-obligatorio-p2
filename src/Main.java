@@ -21,6 +21,8 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         Sistema s = new Sistema();
+        Consola consola = new Consola();
+        
         consola.saludar();
         consola.menu(s);
         

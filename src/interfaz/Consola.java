@@ -130,9 +130,12 @@ public class Consola {
     public void crearPartida(Sistema unSistema) {
         Jugador[] jugadoresSeleccionados = seleccionarJugadores(unSistema);
         String[] letrasSeleccionadas = seleccionarLetras();
+        for (int i = 0; i < jugadoresSeleccionados.length; i++){
+            jugadoresSeleccionados[i].setLetraParaJugar(letrasSeleccionadas[i]);
+        }
         boolean modoTest = consultaModoTest();
 
-        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], letrasSeleccionadas[0], letrasSeleccionadas[1], modoTest);
+        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], modoTest);
         partida.jugar(this);
 
     }
