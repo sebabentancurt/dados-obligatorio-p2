@@ -230,18 +230,11 @@ public class Consola {
      * Imprime la matriz formateada
      */
     public void mostrarTablero(String[][] matriz) {
-        int k = 1;
         for (int i = 0; i < Tablero.FILAS; i++) {
             for (int j = 0; j < Tablero.COLUMNAS; j++) {
-                this.print(matriz[i][j]);
-                if ((k >= 10)) {
-                    this.print("    ");
-                } else {
-                    this.print("     ");
-                }
-                k++;
+                Consola.print(String.format("%15s", matriz[i][j]) +" ");
             }
-            this.println("");
+            Consola.println("");
         }
     }
 

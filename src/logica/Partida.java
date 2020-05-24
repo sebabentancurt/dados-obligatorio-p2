@@ -177,11 +177,11 @@ public class Partida {
     }
 
     public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, String unaLetra) {
-        int pos;
+        /*int pos;
         for (Integer num : jugada) {
             pos = jugada.get(num);
         }
-        boolean ingresar = tablero.ingresarLetra(num, unaLetra,)
+        boolean ingresar = tablero.ingresarLetra(num, unaLetra,)*/
     }
 
 }

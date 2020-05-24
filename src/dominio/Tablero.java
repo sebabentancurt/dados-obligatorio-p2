@@ -114,21 +114,118 @@ public class Tablero {
         for (int i = 0; i < FILAS; i++) {
             filaCantidad = 0;
             for (int j = 0; j < COLUMNAS; j++) {
-                if (this.matriz[i][j].equals(match)) {
+                Boolean letraEnPosicion = this.matriz[i][j].equals(match);
+                
+                if (letraEnPosicion) {
                     filaCantidad++;
-                } else {
-                    if (secuenciaValida(filaCantidad)) {
+                }
+
+                if (!letraEnPosicion) {
+                    if(secuenciaValida(filaCantidad)){
                         cantidad += filaCantidad;
                     }
                     filaCantidad = 0;
                 }
+
+                if (letraEnPosicion && esColumnaFinal(j) && secuenciaValida(filaCantidad)) {
+                    cantidad += filaCantidad;
+                    filaCantidad = 0;
+                }
+
+            }
+        }
+        return cantidad;
+    }
+
+        /**
+     * Devuelve la cantidad de letras por secuencias validas de todas las filas
+     * 
+     * @param letra
+     * @param color
+     * @return
+     */
+    public int secuenciaVertical(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int cantidad = 0;
+        int columnaCantidad = 0;
+        for (int i = 0; i < COLUMNAS; i++) {
+            columnaCantidad = 0;
+            for (int j = 0; j < FILAS; j++) {
+                Boolean letraEnPosicion = this.matriz[j][i].equals(match);
+                
+                if (letraEnPosicion) {
+                    columnaCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if(secuenciaValida(columnaCantidad)){
+                        cantidad += columnaCantidad;
+                    }
+                    columnaCantidad = 0;
+                }
+
+                if (letraEnPosicion && esFilaFinal(j) && secuenciaValida(columnaCantidad)) {
+                    cantidad += columnaCantidad;
+                    columnaCantidad = 0;
+                }
+
             }
         }
         return cantidad;
     }
 
     /**
+     * Devuelve la cantidad de letra en secuencias verticales, horizontales, o diagonales mayores o igual a 3.
+     * @param letra
+     * @param color
+     * @return
+     */
+    public int secuencia(String letra, String color){
+        return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color);
+    }
+
+    public int secuenciaDiagonal(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int cantidad = 0;
+        int columnaCantidad = 0;
+        for (int i = 0; i < FILAS; i++) {
+            columnaCantidad = 0;
+            for (int j = 0; j<=i; j++) {
+                Boolean letraEnPosicion = this.matriz[i-j][j].equals(match);
+                
+                if (letraEnPosicion) {
+                    columnaCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if(secuenciaValida(columnaCantidad)){
+                        cantidad += columnaCantidad;
+                    }
+                    columnaCantidad = 0;
+                }
+
+                if (letraEnPosicion && esFilaFinal(j) && secuenciaValida(columnaCantidad)) {
+                    cantidad += columnaCantidad;
+                    columnaCantidad = 0;
+                }
+
+            }
+            System.out.println();
+        }
+        return cantidad;
+    }
+
+    public Boolean esFilaFinal(Integer fila) {
+        return fila == FILAS - 1;
+    }
+
+    public Boolean esColumnaFinal(Integer columna) {
+        return columna == COLUMNAS - 1;
+    }
+
+    /**
      * Recibe cantidad de una secuencia y retorna si es valida o no
+     * 
      * @param cantidad
      * @return
      */
