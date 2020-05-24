@@ -21,6 +21,7 @@ public class Tablero {
 
     /**
      * Construye la matriz con los valores de posicion
+     * 
      * @param consola
      */
     public Tablero() {
@@ -29,7 +30,7 @@ public class Tablero {
         int k = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                matriz[i][j] = Color.addColorToString(Integer.toString(k),"green");
+                matriz[i][j] = Color.addColorToString(Integer.toString(k), "green");
                 k++;
             }
         }
@@ -37,6 +38,7 @@ public class Tablero {
 
     /**
      * Ingresa una letra en color en una posicion de la matriz
+     * 
      * @param posicion
      * @param letra
      * @param color
@@ -47,7 +49,7 @@ public class Tablero {
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if ((posicionActual == posicionIngreso && coordenadaPosicionEstaVacia(i,j,posicionIngreso))){
+                if ((posicionActual == posicionIngreso && coordenadaPosicionEstaVacia(i, j, posicionIngreso))) {
                     matriz[i][j] = Color.addColorToString(letra, color);
                     ingresoLetra = true;
                 }
@@ -57,9 +59,9 @@ public class Tablero {
         return ingresoLetra;
     }
 
-
     /**
      * Dada una coordenada (x,y) y una posicion de la matriz indica si es vacia o no
+     * 
      * @param fila
      * @param columna
      * @param valor
@@ -76,6 +78,7 @@ public class Tablero {
 
     /**
      * Dada una posicion de la matriz indica si es vacia o no
+     * 
      * @param posicion
      * @return
      */
@@ -85,7 +88,7 @@ public class Tablero {
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if (posicionActual == posicionIngreso){
+                if (posicionActual == posicionIngreso) {
                     if (this.matriz[i][j].equals(match)) {
                         vacio = true;
                     }
@@ -98,15 +101,52 @@ public class Tablero {
     }
 
     /**
+     * Devuelve la cantidad de letras por secuencias validas de todas las filas
+     * 
+     * @param letra
+     * @param color
+     * @return
+     */
+    public int secuenciaHorizontal(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int cantidad = 0;
+        int filaCantidad = 0;
+        for (int i = 0; i < FILAS; i++) {
+            filaCantidad = 0;
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (this.matriz[i][j].equals(match)) {
+                    filaCantidad++;
+                } else {
+                    if (secuenciaValida(filaCantidad)) {
+                        cantidad += filaCantidad;
+                    }
+                    filaCantidad = 0;
+                }
+            }
+        }
+        return cantidad;
+    }
+
+    /**
+     * Recibe cantidad de una secuencia y retorna si es valida o no
+     * @param cantidad
+     * @return
+     */
+    public Boolean secuenciaValida(Integer cantidad) {
+        return cantidad >= 3;
+    }
+
+    /**
      * Indica si un tablero tiene alguna posicion vacia
+     * 
      * @return Boolean
      */
-    public Boolean estaCompleto(){
+    public Boolean estaCompleto() {
         Boolean completo = true;
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if (Boolean.TRUE.equals(coordenadaPosicionEstaVacia(i,j,posicionActual))){
+                if (Boolean.TRUE.equals(coordenadaPosicionEstaVacia(i, j, posicionActual))) {
                     completo = false;
                 }
                 posicionActual++;
@@ -115,7 +155,7 @@ public class Tablero {
         return completo;
     }
 
-    public String[][] getMatriz(){
+    public String[][] getMatriz() {
         return this.matriz;
     }
 }
