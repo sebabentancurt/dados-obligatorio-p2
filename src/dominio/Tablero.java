@@ -180,7 +180,7 @@ public class Tablero {
      * @param color
      * @return
      */
-    public int secuencia(String letra, String color){
+    public int letraEnSecuencia(String letra, String color){
         return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color);
     }
 
