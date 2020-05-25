@@ -6,6 +6,7 @@
 package dominio;
 
 import helper.Color;
+import interfaz.Consola;
 
 /**
  *
@@ -76,6 +77,147 @@ public class Tablero {
         return vacio;
     }
 
+
+    
+    public int secuenciaDiagonalInversaSuperior(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int cantidad = 0;
+        int filaI = 0;
+        int columnaI = 0;
+        for (int i = 0; i < FILAS; i++) {
+            int diagonalCantidad = 0;
+            for (int j = 0; j <= i; j++) {
+                filaI = i - j;
+                columnaI = j;
+                Boolean letraEnPosicion = this.getValue(filaI, columnaI).equals(match);
+
+                if (letraEnPosicion) {
+                    diagonalCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if (secuenciaValida(diagonalCantidad)) {
+                        cantidad += diagonalCantidad;
+                    }
+                    diagonalCantidad = 0;
+                }
+
+                if (letraEnPosicion && esFilaInicial(filaI) && secuenciaValida(diagonalCantidad)) {
+                    cantidad += diagonalCantidad;
+                    diagonalCantidad = 0;
+                }
+
+            }
+        }
+        return cantidad;
+    }
+
+    public int secuenciaDiagonalInversaInferior(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int cantidad = 0;
+        int filaI = 0;
+        int columnaI = 0;
+        for (int i = 0; i < FILAS; i++) {
+            int diagonalCantidad = 0;
+            for (int j = 0; j < COLUMNAS - i - 1; j++) {
+                columnaI = j + i + 1;
+                filaI = FILAS - j - 1;
+
+                Boolean letraEnPosicion = this.getValue(filaI, columnaI).equals(match);
+
+                if (letraEnPosicion) {
+                    diagonalCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if (secuenciaValida(diagonalCantidad)) {
+                        cantidad += diagonalCantidad;
+                    }
+                    diagonalCantidad = 0;
+                }
+
+                if (letraEnPosicion && esColumnaFinal(columnaI) && secuenciaValida(diagonalCantidad)) {
+                    cantidad += diagonalCantidad;
+                    diagonalCantidad = 0;
+                }
+
+            }
+        }
+        return cantidad;
+    }
+
+    public int secuenciaDiagonalSuperior(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int columnaI = this.getColumnasI();
+        int filaI = 0;
+        int cantidad = 0;
+        while (columnaI >= 0) {
+            int tmpFilaI = filaI;
+            int tmpColumnaI = columnaI;
+            int diagonalCantidad = 0;
+            while (this.filaColumnaValida(tmpFilaI, tmpColumnaI)) {
+                Boolean letraEnPosicion = this.getValue(tmpFilaI, tmpColumnaI).equals(match);
+
+                if (letraEnPosicion) {
+                    diagonalCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if (secuenciaValida(diagonalCantidad)) {
+                        cantidad += diagonalCantidad;
+                    }
+                    diagonalCantidad = 0;
+                }
+
+                if (letraEnPosicion && esFilaOColumnaFinal(tmpFilaI,tmpColumnaI) && secuenciaValida(diagonalCantidad)) {
+                    cantidad += diagonalCantidad;
+                    diagonalCantidad = 0;
+                }
+
+                tmpFilaI++;
+                tmpColumnaI++;
+            }
+            columnaI--;
+        }
+        return cantidad;
+    }
+
+    public int secuenciaDiagonalInferior(String letra, String color) {
+        String match = Color.addColorToString(letra, color);
+        int columnaI = 0;
+        int filaI = this.getFilasI();
+        int cantidad = 0;
+        while (filaI >= 1) {
+            int tmpFilaI = filaI;
+            int tmpColumnaI = columnaI;
+            int diagonalCantidad = 0;
+            while (this.filaColumnaValida(tmpFilaI, tmpColumnaI)) {
+                Boolean letraEnPosicion = this.getValue(tmpFilaI, tmpColumnaI).equals(match);
+
+                if (letraEnPosicion) {
+                    diagonalCantidad++;
+                }
+
+                if (!letraEnPosicion) {
+                    if (secuenciaValida(diagonalCantidad)) {
+                        cantidad += diagonalCantidad;
+                    }
+                    diagonalCantidad = 0;
+                }
+
+                if (letraEnPosicion && esFilaFinal(tmpFilaI) && secuenciaValida(diagonalCantidad)) {
+                    cantidad += diagonalCantidad;
+                    diagonalCantidad = 0;
+                }
+
+                tmpFilaI++;
+                tmpColumnaI++;
+            }
+            filaI--;
+        }
+        return cantidad;
+    }
+
     /**
      * Dada una posicion de la matriz indica si es vacia o no
      * 
@@ -98,6 +240,33 @@ public class Tablero {
         return vacio;
     }
 
+    public boolean filaColumnaValida(int filaI, int columnaI) {
+        Boolean valido = false;
+        if (filaI <= this.getFilasI() && columnaI <= this.getColumnasI()) {
+            valido = true;
+        }
+        return valido;
+    }
+
+    /**
+     * Devuelve el valor
+     * 
+     * @param fila
+     * @param columna
+     * @return
+     */
+    public String getValue(int filaI, int columnaI) {
+        return this.matriz[filaI][columnaI];
+    }
+
+    public int getColumnasI() {
+        return COLUMNAS - 1;
+    }
+
+    public int getFilasI() {
+        return FILAS - 1;
+    }
+
     /**
      * Devuelve la cantidad de letras por secuencias validas de todas las filas
      * 
@@ -113,13 +282,13 @@ public class Tablero {
             filaCantidad = 0;
             for (int j = 0; j < COLUMNAS; j++) {
                 Boolean letraEnPosicion = this.matriz[i][j].equals(match);
-                
+
                 if (letraEnPosicion) {
                     filaCantidad++;
                 }
 
                 if (!letraEnPosicion) {
-                    if(secuenciaValida(filaCantidad)){
+                    if (secuenciaValida(filaCantidad)) {
                         cantidad += filaCantidad;
                     }
                     filaCantidad = 0;
@@ -135,7 +304,7 @@ public class Tablero {
         return cantidad;
     }
 
-        /**
+    /**
      * Devuelve la cantidad de letras por secuencias validas de todas las filas
      * 
      * @param letra
@@ -150,13 +319,13 @@ public class Tablero {
             columnaCantidad = 0;
             for (int j = 0; j < FILAS; j++) {
                 Boolean letraEnPosicion = this.matriz[j][i].equals(match);
-                
+
                 if (letraEnPosicion) {
                     columnaCantidad++;
                 }
 
                 if (!letraEnPosicion) {
-                    if(secuenciaValida(columnaCantidad)){
+                    if (secuenciaValida(columnaCantidad)) {
                         cantidad += columnaCantidad;
                     }
                     columnaCantidad = 0;
@@ -173,44 +342,23 @@ public class Tablero {
     }
 
     /**
-     * Devuelve la cantidad de letra en secuencias verticales, horizontales, o diagonales mayores o igual a 3.
+     * Devuelve la cantidad de letra en secuencias verticales, horizontales, o
+     * diagonales mayores o igual a 3.
+     * 
      * @param letra
      * @param color
      * @return
      */
-    public int letraEnSecuencia(String letra, String color){
-        return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color);
+    public int letraEnSecuencia(String letra, String color) {
+        return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color) + this.secuenciaDiagonal(letra, color) + this.secuenciaDiagonalInversa(letra, color);
     }
 
     public int secuenciaDiagonal(String letra, String color) {
-        String match = Color.addColorToString(letra, color);
-        int cantidad = 0;
-        int columnaCantidad = 0;
-        for (int i = 0; i < FILAS; i++) {
-            columnaCantidad = 0;
-            for (int j = 0; j<=i; j++) {
-                Boolean letraEnPosicion = this.matriz[i-j][j].equals(match);
-                
-                if (letraEnPosicion) {
-                    columnaCantidad++;
-                }
+        return secuenciaDiagonalSuperior(letra, color) + secuenciaDiagonalInferior(letra, color);
+    }
 
-                if (!letraEnPosicion) {
-                    if(secuenciaValida(columnaCantidad)){
-                        cantidad += columnaCantidad;
-                    }
-                    columnaCantidad = 0;
-                }
-
-                if (letraEnPosicion && esFilaFinal(j) && secuenciaValida(columnaCantidad)) {
-                    cantidad += columnaCantidad;
-                    columnaCantidad = 0;
-                }
-
-            }
-            System.out.println();
-        }
-        return cantidad;
+    public int secuenciaDiagonalInversa(String letra, String color) {
+        return secuenciaDiagonalInversaSuperior(letra, color) + secuenciaDiagonalInversaInferior(letra, color);
     }
 
     public Boolean esFilaFinal(Integer fila) {
@@ -219,6 +367,22 @@ public class Tablero {
 
     public Boolean esColumnaFinal(Integer columna) {
         return columna == COLUMNAS - 1;
+    }
+
+    public Boolean esFilaInicial(Integer fila) {
+        return fila == 0;
+    }
+
+    public Boolean esColumnaInicial(Integer columna) {
+        return columna == 0;
+    }
+
+    public Boolean esFilaOColumnaFinal(Integer fila, Integer columna) {
+        return esFilaFinal(fila) || esColumnaFinal(columna);
+    }
+
+    public Boolean esFilaOColumnaInicial(Integer fila, Integer columna) {
+        return esFilaInicial(fila) || esColumnaInicial(columna);
     }
 
     /**

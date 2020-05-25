@@ -22,21 +22,20 @@ public class Main {
         // TODO code application logic here
         Sistema s = new Sistema();
         Consola consola = new Consola();
-        
-        consola.saludar();
-        consola.menu(s);
-        
-        /*Consola consola = new Consola();
         Tablero tablero = new Tablero();
+        
+        //consola.saludar();
+        //consola.menu(s);
+        
         consola.mostrarTablero(tablero.getMatriz());
 
-        int[] posiciones = {9,10,7,5,2,12,8,3,20};
+        int[] posiciones = {9,10,7,5,2,12,14,20,15,1,11,17,6,18,13,19,8,4,3,16};
         for (int posicion : posiciones) {
             tablero.ingresarLetra(posicion, "A", "blue");
         }
         
         consola.mostrarTablero(tablero.getMatriz());
-        Consola.printGreen(Integer.toString(tablero.secuenciaDiagonal("A", "blue")));*/
+        Consola.printGreen(Integer.toString(tablero.letraEnSecuencia("A", "blue")));
 
         
     }
