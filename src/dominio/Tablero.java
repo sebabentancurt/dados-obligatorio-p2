@@ -17,7 +17,7 @@ public class Tablero {
     public static final int FILAS = 4;
     public static final int COLUMNAS = 5;
 
-    private String matriz[][];
+    private String[][] matriz;
 
     /**
      * Construye la matriz con los valores de posicion
@@ -88,10 +88,8 @@ public class Tablero {
         int posicionActual = 1;
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                if (posicionActual == posicionIngreso) {
-                    if (this.matriz[i][j].equals(match)) {
-                        vacio = true;
-                    }
+                if (posicionActual == posicionIngreso && this.matriz[i][j].equals(match)) {
+                    vacio = true;
                 }
                 posicionActual++;
             }
