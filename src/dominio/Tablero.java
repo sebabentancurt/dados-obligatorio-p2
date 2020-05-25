@@ -72,23 +72,6 @@ public class Tablero {
     }
 
     /**
-     * Dada una coordenada (x,y) y una posicion de la matriz indica si es vacia o no
-     * 
-     * @param fila
-     * @param columna
-     * @param valor
-     * @return
-     */
-    public Boolean coordenadaPosicionEstaVacia(int fila, int columna, int posicion) {
-        String match = Color.addColorToString(Integer.toString(posicion), "green");
-        Boolean vacio = false;
-        if (this.matriz[fila][columna].equals(match)) {
-            vacio = true;
-        }
-        return vacio;
-    }
-
-    /**
      * Dada una posicion de la matriz indica si es vacia o no
      * 
      * @param posicion
@@ -131,6 +114,23 @@ public class Tablero {
 
     public String[][] getMatriz() {
         return this.matriz;
+    }
+
+    /**
+     * Dada una coordenada (x,y) y una posicion de la matriz indica si es vacia o no
+     * 
+     * @param fila
+     * @param columna
+     * @param valor
+     * @return
+     */
+    private Boolean coordenadaPosicionEstaVacia(int fila, int columna, int posicion) {
+        String match = Color.addColorToString(Integer.toString(posicion), "green");
+        Boolean vacio = false;
+        if (this.matriz[fila][columna].equals(match)) {
+            vacio = true;
+        }
+        return vacio;
     }
 
     private int secuenciaDiagonalInversaSuperior(String letra, String color) {
