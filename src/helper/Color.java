@@ -30,6 +30,12 @@ public class Color {
             case "green":
                 prefix = ANSI_GREEN;
                 break;
+            case "purple":
+                prefix = ANSI_PURPLE;
+                break;
+            case "yellow":
+                prefix = ANSI_YELLOW;
+                break;
             default:
                 break;
         }

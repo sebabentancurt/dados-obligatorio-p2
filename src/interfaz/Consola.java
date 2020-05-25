@@ -23,21 +23,19 @@ import logica.Sistema;
 public class Consola {
 
     public void saludar() {
-        printGreen("BIENVENIDO A DADOS!");
+        printlnGreen("¡Bienvenido a dados!");
     }
 
     public void menu(Sistema unSistema) {
+        println("");
+        println("1) Registrar Jugador");
+        println("2) Jugar");
+        println("3) Ver ranking");
+        println("4) Salir");
+        println("");
+        int respuesta = Consola.leerOpcion("Ingrese opción:", 1, 4);
+        println("");
 
-        System.out.println("MENÚ:");
-        System.out.println("1.REGISTRAR JUGADOR");
-        System.out.println("2.JUGAR");
-        System.out.println("3.VER RANKING");
-        System.out.println("4.SALIR");
-
-        Scanner in = new Scanner(System.in);
-        int respuesta;
-
-        respuesta = in.nextInt();
         switch (respuesta) {
             case 1:
                 unSistema.registroJugador();
@@ -47,32 +45,30 @@ public class Consola {
                 if (unSistema.getListaJugadores().size() > 1) {
                     crearPartida(unSistema);
                 } else {
-                    printRed("Debe registrar al menos 2 jugadores para comenzar el juego.");
+                    printlnRed("Debe registrar al menos 2 jugadores para comenzar el juego.");
                 }
+                esperarParaContinuar();
                 menu(unSistema);
                 break;
 
             case 3:
-                System.out.println("RANKING JUGADORES");
+                printlnGreen("Ranking de jugadores:");
                 unSistema.listaOrdenada();
                 imprimirListaJugadores(unSistema);
+                esperarParaContinuar();
                 menu(unSistema);
                 break;
             case 4:
-                System.out.println("GRACIAS POR JUGAR, HASTA LA VUELTA ;)");
+                printlnGreen("Gracias por jugar, hasta la vuelta ;)");
                 break;
-            default:
-                printRed("ERROR, VUELVA A SELECCIONAR");
-                menu(unSistema);
-
         }
     }
 
     public static String leerString(String message) {
         Scanner scan = new Scanner(System.in);
-        Consola.printGreen(message);
+        Consola.printlnYellow(message);
         while (!scan.hasNextLine()) {
-            Consola.printRed("Entrada no es un texto. Intente nuevamente.");
+            Consola.printlnRed("Entrada no es un texto. Intente nuevamente.");
 
         }
         return scan.nextLine();
@@ -80,21 +76,28 @@ public class Consola {
 
     public static Integer leerInt(String message) {
         Scanner scan = new Scanner(System.in);
-        Consola.printGreen(message);
+        Consola.printlnYellow(message);
 
         while (!scan.hasNextInt()) {
-            Consola.printRed("Entrada no es un entero. Intente nuevamente.");
+            Consola.printlnRed("Entrada no es un entero. Intente nuevamente.");
             scan.next();
         }
         return scan.nextInt();
     }
 
+    public static void esperarParaContinuar() {
+        Consola.println("");
+        Consola.printYellow("Presiona \"ENTER\" para continuar...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
+
     public static String leerLetra(String message) {
         Scanner scan = new Scanner(System.in);
-        Consola.printGreen(message);
+        Consola.printlnYellow(message);
 
         while (!scan.hasNext("[a-zA-Z]")) {
-            Consola.printRed("Entrada no es una letra. Intente nuevamente.");
+            Consola.printlnRed("Entrada no es una letra. Intente nuevamente.");
             scan.next();
         }
         return scan.nextLine();
@@ -108,18 +111,18 @@ public class Consola {
      */
     public static Integer leerOpcion(String message, Integer minOpcion, Integer maxOpcion) {
         Scanner scan = new Scanner(System.in);
-        System.out.println(message);
+        Consola.printlnYellow(message);
         Integer opcion = 0;
         while (true) {
             if (!scan.hasNextInt()) {
-                Consola.printRed("Opción no es un entero. Intente nuevamente.");
+                Consola.printlnRed("Opción no es un entero. Intente nuevamente.");
                 scan.next();
                 continue;
             }
 
             opcion = scan.nextInt();
             if (!(opcion >= minOpcion && opcion <= maxOpcion)) {
-                Consola.printRed("Opción no valida. Intente nuevamente.");
+                Consola.printlnRed("Opción no valida. Intente nuevamente.");
                 continue;
             }
             break;
@@ -157,7 +160,7 @@ public class Consola {
 
         Integer seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
         while (seleccionRojo.equals(seleccionAzul)) {
-            Consola.printRed("El jugador ya ha sido seleccionado. Intente nuevamente");
+            Consola.printlnRed("El jugador ya ha sido seleccionado. Intente nuevamente");
             seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
         }
         Jugador jugadorAzul = unSistema.getListaJugadores().get(seleccionRojo - 1);
@@ -174,9 +177,8 @@ public class Consola {
      * @param unSistema
      */
     public void imprimirListaJugadores(Sistema unSistema) {
-        printGreen("LISTA DE JUGADORES");
         if (unSistema.getListaJugadores().isEmpty()) {
-            printRed("LISTA VACIA");
+            printlnRed("No existen jugadores registrados.");
         } else {
             for (int i = 0; i < unSistema.getListaJugadores().size(); i++) {
                 println((i + 1) + ". " + unSistema.getListaJugadores().get(i));
@@ -192,7 +194,7 @@ public class Consola {
 
         String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
         while (letraAzul.equals(letraRojo)) {
-            Consola.printRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
+            Consola.printlnRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
             letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
         }
 
@@ -241,12 +243,31 @@ public class Consola {
         }
     }
 
-    public static void printGreen(String value) {
+    public static void printlnGreen(String value) {
         System.out.println(Color.addColorToString(value, "green"));
     }
 
-    public static void printRed(String value) {
+    public static void printlnRed(String value) {
         System.out.println(Color.addColorToString(value, "red"));
+    }
+
+    public static void printlnPurple(String value) {
+        System.out.println(Color.addColorToString(value, "purple"));
+    }
+    public static void printlnYellow(String value) {
+        System.out.println(Color.addColorToString(value, "yellow"));
+    }
+
+    public static void printlnBlue(String value) {
+        System.out.println(Color.addColorToString(value, "blue"));
+    }
+
+    public static void printGreen(String value) {
+        System.out.print(Color.addColorToString(value, "green"));
+    }
+
+    public static void printYellow(String value) {
+        System.out.print(Color.addColorToString(value, "yellow"));
     }
 
     public static void print(String value) {

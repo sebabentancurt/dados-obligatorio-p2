@@ -37,7 +37,7 @@ public class Sistema {
     }
 
     public void registroJugador() {
-        Consola.printGreen("REGISTRO DE JUGADOR:");
+        Consola.printlnGreen("Registrar jugador:");
         String nombre = Consola.leerString("Ingrese nombre:");
         int edad = Consola.leerInt("Ingrese edad");
         String alias = Consola.leerString("Ingrese alias:");
@@ -45,11 +45,12 @@ public class Sistema {
         Jugador jugador = new Jugador(nombre, edad, alias);
 
         if (this.existeJugador(jugador)) {
-            Consola.printRed("Ya existe jugador con mismo alias");
+            Consola.printlnRed("Ya existe jugador con mismo alias");
         } else {
             this.agregarJugador(jugador);
-            Consola.printGreen(jugador.getAlias() + " fue registrado con exito!");
+            Consola.printlnGreen(jugador.getAlias() + " fue registrado con exito!");
         }
+        Consola.esperarParaContinuar();
     }
 
     /*public void comenzarPartida() {

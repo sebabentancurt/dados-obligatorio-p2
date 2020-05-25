@@ -105,8 +105,8 @@ public class Partida {
             mostrarPuntaje(unaConsola);
 
             unaConsola.mostrarTablero(getTablero().getMatriz());
-
-            unaConsola.printGreen("TURNO DE JUGADOR AZUL");
+            
+            unaConsola.printlnGreen("TURNO DE JUGADOR AZUL");
             jugada(unaConsola, getJugadorAzul());
         }
         this.terminarPartida(unaConsola);
@@ -143,7 +143,7 @@ public class Partida {
                 if (verificarJugada(jugada, dados)) {
                     aplicarJugadaEnTablero(jugada, dados, unJugador);
                 } else {
-                    unaConsola.printRed("Jugada no valida, vuelva a ingresar");
+                    unaConsola.printlnRed("Jugada no valida, vuelva a ingresar");
                     pedirJugada(unaConsola, dados, unJugador);
                 }
 
