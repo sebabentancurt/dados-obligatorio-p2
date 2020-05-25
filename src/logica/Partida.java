@@ -24,6 +24,7 @@ public class Partida {
     private int scoreAzul = 0;
     private boolean modoTest;
     private Tablero tablero;
+    private boolean abandono = false;
 
     public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, boolean modoTest) {
         this.setJugadorRojo(unJugadorRojo);
@@ -58,6 +59,10 @@ public class Partida {
         return scoreAzul;
     }
 
+    public boolean getAbandono() {
+        return abandono;
+    }
+
     //Setters
     public void setJugadorRojo(Jugador unJugador) {
         this.jugadorRojo = unJugador;
@@ -78,14 +83,17 @@ public class Partida {
     public void setPuntajeRojo(int unNumero) {
         this.scoreRojo = unNumero;
     }
-    
+
     public void setPuntajeAzul(int unNumero) {
         this.scoreAzul = unNumero;
     }
 
+    public void setAbandono(boolean unBoolean) {
+        this.abandono = unBoolean;
+    }
+
     public void jugar(Consola unaConsola) {
-        boolean abandono = false;
-        while (!this.getTablero().estaCompleto() || abandono) {
+        while (!this.getTablero().estaCompleto() || this.getAbandono()) {
 
             mostrarPuntaje(unaConsola);
 
@@ -101,6 +109,7 @@ public class Partida {
             unaConsola.printGreen("TURNO DE JUGADOR AZUL");
             jugada(unaConsola, getJugadorAzul());
         }
+        this.terminarPartida(unaConsola);
     }
 
     public void jugada(Consola unaConsola, Jugador unJugador) {
@@ -115,12 +124,13 @@ public class Partida {
         switch (respuesta) {
             case "A":
                 //ayuda();
+                pedirJugada(unaConsola, dados, unJugador);
                 break;
             case "P":
                 unaConsola.println("PASA DE TURNO");
                 break;
             case "X":
-                //abandonar();
+                abandonar(unJugador);
                 break;
             default:
                 String[] respuestaArray = respuesta.split(" ");
@@ -133,6 +143,7 @@ public class Partida {
                 if (verificarJugada(jugada, dados)) {
                     aplicarJugadaEnTablero(jugada, unJugador);
                 } else {
+                    unaConsola.printRed("Jugada no valida, vuelva a ingresar");
                     pedirJugada(unaConsola, dados, unJugador);
                 }
 
@@ -181,13 +192,18 @@ public class Partida {
     public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, Jugador unJugador) {
         int pos = 0;
         String color;
-        for (Integer num : jugada) {
-            pos += jugada.get(num);
-        }
+
         if (unJugador.equals(jugadorRojo)) {
             color = "red";
         } else {
             color = "blue";
+        }
+        if (jugada.size() == 1 && jugada.contains(0)) {
+            pos = jugada.get(0);
+        } else {
+            for (Integer num : jugada) {
+                pos += jugada.get(num);
+            }
         }
         boolean ingresar = tablero.ingresarLetra(pos, unJugador.getLetraParaJugar(), color);
     }
@@ -195,10 +211,33 @@ public class Partida {
     public void mostrarPuntaje(Consola unaConsola) {
         setPuntajeRojo(tablero.letraEnSecuencia(jugadorRojo.getLetraParaJugar(), "red"));
         setPuntajeRojo(tablero.letraEnSecuencia(jugadorAzul.getLetraParaJugar(), "blue"));
-        
+
         unaConsola.println("PUNTAJE:");
         unaConsola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
         unaConsola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
+    }
+
+    public void abandonar(Jugador unJugador) {
+        this.setAbandono(true);
+        if (unJugador.equals(this.getJugadorRojo())) {
+            this.setPuntajeRojo(-1);
+        } else {
+            this.setPuntajeAzul(-1);
+        }
+    }
+
+    public void terminarPartida(Consola unaConsola) {
+        this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
+        this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
+        if (this.getPuntajeRojo() > this.getPuntajeAzul()) {
+            unaConsola.println("Ganador: " + this.getJugadorRojo().getAlias());
+            this.getJugadorRojo().setPartidasGanadas(this.getJugadorRojo().getPartidasGanadas() + 1);
+        } else if (this.getPuntajeRojo() < this.getPuntajeAzul()) {
+            unaConsola.println("Ganador: " + this.getJugadorAzul().getAlias());
+            this.getJugadorAzul().setPartidasGanadas(this.getJugadorAzul().getPartidasGanadas() + 1);
+        } else if (this.getPuntajeRojo() == this.getPuntajeAzul()) {
+            unaConsola.println("EMPATE");
+        }
     }
 
 }
