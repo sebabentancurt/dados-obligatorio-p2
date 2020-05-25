@@ -6,7 +6,6 @@
 package dominio;
 
 import helper.Color;
-import interfaz.Consola;
 
 /**
  *
@@ -61,6 +60,18 @@ public class Tablero {
     }
 
     /**
+     * Devuelve la cantidad de letra en secuencias verticales, horizontales, o
+     * diagonales mayores o igual a 3.
+     * 
+     * @param letra
+     * @param color
+     * @return
+     */
+    public int letraEnSecuencia(String letra, String color) {
+        return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color) + this.secuenciaDiagonal(letra, color) + this.secuenciaDiagonalInversa(letra, color);
+    }
+
+    /**
      * Dada una coordenada (x,y) y una posicion de la matriz indica si es vacia o no
      * 
      * @param fila
@@ -77,9 +88,52 @@ public class Tablero {
         return vacio;
     }
 
+    /**
+     * Dada una posicion de la matriz indica si es vacia o no
+     * 
+     * @param posicion
+     * @return
+     */
+    public Boolean posicionEstaVacia(int posicionIngreso) {
+        String match = Color.addColorToString(Integer.toString(posicionIngreso), "green");
+        Boolean vacio = false;
+        int posicionActual = 1;
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (posicionActual == posicionIngreso && this.matriz[i][j].equals(match)) {
+                    vacio = true;
+                }
+                posicionActual++;
+            }
+        }
 
-    
-    public int secuenciaDiagonalInversaSuperior(String letra, String color) {
+        return vacio;
+    }
+
+    /**
+     * Indica si un tablero tiene alguna posicion vacia
+     * 
+     * @return Boolean
+     */
+    public Boolean estaCompleto() {
+        Boolean completo = true;
+        int posicionActual = 1;
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (Boolean.TRUE.equals(coordenadaPosicionEstaVacia(i, j, posicionActual))) {
+                    completo = false;
+                }
+                posicionActual++;
+            }
+        }
+        return completo;
+    }
+
+    public String[][] getMatriz() {
+        return this.matriz;
+    }
+
+    private int secuenciaDiagonalInversaSuperior(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int cantidad = 0;
         int filaI = 0;
@@ -112,7 +166,7 @@ public class Tablero {
         return cantidad;
     }
 
-    public int secuenciaDiagonalInversaInferior(String letra, String color) {
+    private int secuenciaDiagonalInversaInferior(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int cantidad = 0;
         int filaI = 0;
@@ -146,7 +200,7 @@ public class Tablero {
         return cantidad;
     }
 
-    public int secuenciaDiagonalSuperior(String letra, String color) {
+    private int secuenciaDiagonalSuperior(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int columnaI = this.getColumnasI();
         int filaI = 0;
@@ -182,7 +236,7 @@ public class Tablero {
         return cantidad;
     }
 
-    public int secuenciaDiagonalInferior(String letra, String color) {
+    private int secuenciaDiagonalInferior(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int columnaI = 0;
         int filaI = this.getFilasI();
@@ -219,62 +273,13 @@ public class Tablero {
     }
 
     /**
-     * Dada una posicion de la matriz indica si es vacia o no
-     * 
-     * @param posicion
-     * @return
-     */
-    public Boolean posicionEstaVacia(int posicionIngreso) {
-        String match = Color.addColorToString(Integer.toString(posicionIngreso), "green");
-        Boolean vacio = false;
-        int posicionActual = 1;
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                if (posicionActual == posicionIngreso && this.matriz[i][j].equals(match)) {
-                    vacio = true;
-                }
-                posicionActual++;
-            }
-        }
-
-        return vacio;
-    }
-
-    public boolean filaColumnaValida(int filaI, int columnaI) {
-        Boolean valido = false;
-        if (filaI <= this.getFilasI() && columnaI <= this.getColumnasI()) {
-            valido = true;
-        }
-        return valido;
-    }
-
-    /**
-     * Devuelve el valor
-     * 
-     * @param fila
-     * @param columna
-     * @return
-     */
-    public String getValue(int filaI, int columnaI) {
-        return this.matriz[filaI][columnaI];
-    }
-
-    public int getColumnasI() {
-        return COLUMNAS - 1;
-    }
-
-    public int getFilasI() {
-        return FILAS - 1;
-    }
-
-    /**
      * Devuelve la cantidad de letras por secuencias validas de todas las filas
      * 
      * @param letra
      * @param color
      * @return
      */
-    public int secuenciaHorizontal(String letra, String color) {
+    private int secuenciaHorizontal(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int cantidad = 0;
         int filaCantidad = 0;
@@ -311,7 +316,7 @@ public class Tablero {
      * @param color
      * @return
      */
-    public int secuenciaVertical(String letra, String color) {
+    private int secuenciaVertical(String letra, String color) {
         String match = Color.addColorToString(letra, color);
         int cantidad = 0;
         int columnaCantidad = 0;
@@ -341,48 +346,12 @@ public class Tablero {
         return cantidad;
     }
 
-    /**
-     * Devuelve la cantidad de letra en secuencias verticales, horizontales, o
-     * diagonales mayores o igual a 3.
-     * 
-     * @param letra
-     * @param color
-     * @return
-     */
-    public int letraEnSecuencia(String letra, String color) {
-        return this.secuenciaHorizontal(letra, color) + this.secuenciaVertical(letra, color) + this.secuenciaDiagonal(letra, color) + this.secuenciaDiagonalInversa(letra, color);
-    }
-
-    public int secuenciaDiagonal(String letra, String color) {
+    private int secuenciaDiagonal(String letra, String color) {
         return secuenciaDiagonalSuperior(letra, color) + secuenciaDiagonalInferior(letra, color);
     }
 
-    public int secuenciaDiagonalInversa(String letra, String color) {
+    private int secuenciaDiagonalInversa(String letra, String color) {
         return secuenciaDiagonalInversaSuperior(letra, color) + secuenciaDiagonalInversaInferior(letra, color);
-    }
-
-    public Boolean esFilaFinal(Integer fila) {
-        return fila == FILAS - 1;
-    }
-
-    public Boolean esColumnaFinal(Integer columna) {
-        return columna == COLUMNAS - 1;
-    }
-
-    public Boolean esFilaInicial(Integer fila) {
-        return fila == 0;
-    }
-
-    public Boolean esColumnaInicial(Integer columna) {
-        return columna == 0;
-    }
-
-    public Boolean esFilaOColumnaFinal(Integer fila, Integer columna) {
-        return esFilaFinal(fila) || esColumnaFinal(columna);
-    }
-
-    public Boolean esFilaOColumnaInicial(Integer fila, Integer columna) {
-        return esFilaInicial(fila) || esColumnaInicial(columna);
     }
 
     /**
@@ -391,30 +360,58 @@ public class Tablero {
      * @param cantidad
      * @return
      */
-    public Boolean secuenciaValida(Integer cantidad) {
+    private Boolean secuenciaValida(Integer cantidad) {
         return cantidad >= 3;
     }
 
-    /**
-     * Indica si un tablero tiene alguna posicion vacia
-     * 
-     * @return Boolean
-     */
-    public Boolean estaCompleto() {
-        Boolean completo = true;
-        int posicionActual = 1;
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                if (Boolean.TRUE.equals(coordenadaPosicionEstaVacia(i, j, posicionActual))) {
-                    completo = false;
-                }
-                posicionActual++;
-            }
-        }
-        return completo;
+    private Boolean esFilaFinal(Integer fila) {
+        return fila == FILAS - 1;
     }
 
-    public String[][] getMatriz() {
-        return this.matriz;
+    private Boolean esColumnaFinal(Integer columna) {
+        return columna == COLUMNAS - 1;
+    }
+
+    private Boolean esFilaInicial(Integer fila) {
+        return fila == 0;
+    }
+
+    private Boolean esColumnaInicial(Integer columna) {
+        return columna == 0;
+    }
+
+    private Boolean esFilaOColumnaFinal(Integer fila, Integer columna) {
+        return esFilaFinal(fila) || esColumnaFinal(columna);
+    }
+
+    private Boolean esFilaOColumnaInicial(Integer fila, Integer columna) {
+        return esFilaInicial(fila) || esColumnaInicial(columna);
+    }
+
+    private boolean filaColumnaValida(int filaI, int columnaI) {
+        Boolean valido = false;
+        if (filaI <= this.getFilasI() && columnaI <= this.getColumnasI()) {
+            valido = true;
+        }
+        return valido;
+    }
+
+    /**
+     * Devuelve el valor
+     * 
+     * @param fila
+     * @param columna
+     * @return
+     */
+    private String getValue(int filaI, int columnaI) {
+        return this.matriz[filaI][columnaI];
+    }
+
+    private int getColumnasI() {
+        return COLUMNAS - 1;
+    }
+
+    private int getFilasI() {
+        return FILAS - 1;
     }
 }
