@@ -141,7 +141,7 @@ public class Partida {
                 }
 
                 if (verificarJugada(jugada, dados)) {
-                    aplicarJugadaEnTablero(jugada, unJugador);
+                    aplicarJugadaEnTablero(jugada, dados, unJugador);
                 } else {
                     unaConsola.printRed("Jugada no valida, vuelva a ingresar");
                     pedirJugada(unaConsola, dados, unJugador);
@@ -189,7 +189,7 @@ public class Partida {
         }
     }
 
-    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, Jugador unJugador) {
+    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, ArrayList<Integer> dados, Jugador unJugador) {
         int pos = 0;
         String color;
 
@@ -201,6 +201,7 @@ public class Partida {
         if (jugada.size() == 1 && jugada.contains(0)) {
             pos = jugada.get(0);
         } else {
+            pos = dados.get(0);
             for (Integer num : jugada) {
                 pos += jugada.get(num);
             }
