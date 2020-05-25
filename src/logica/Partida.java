@@ -50,6 +50,14 @@ public class Partida {
         return tablero;
     }
 
+    public int getPuntajeRojo() {
+        return scoreRojo;
+    }
+
+    public int getPuntajeAzul() {
+        return scoreAzul;
+    }
+
     //Setters
     public void setJugadorRojo(Jugador unJugador) {
         this.jugadorRojo = unJugador;
@@ -67,14 +75,26 @@ public class Partida {
         this.tablero = new Tablero();
     }
 
+    public void setPuntajeRojo(int unNumero) {
+        this.scoreRojo = unNumero;
+    }
+    
+    public void setPuntajeAzul(int unNumero) {
+        this.scoreAzul = unNumero;
+    }
+
     public void jugar(Consola unaConsola) {
         boolean abandono = false;
         while (!this.getTablero().estaCompleto() || abandono) {
+
+            mostrarPuntaje(unaConsola);
 
             unaConsola.mostrarTablero(getTablero().getMatriz());
 
             unaConsola.printGreen("TURNO DE JUGADOR ROJO");
             jugada(unaConsola, getJugadorRojo());
+
+            mostrarPuntaje(unaConsola);
 
             unaConsola.mostrarTablero(getTablero().getMatriz());
 
@@ -164,12 +184,21 @@ public class Partida {
         for (Integer num : jugada) {
             pos += jugada.get(num);
         }
-        if(unJugador.equals(jugadorRojo)){
+        if (unJugador.equals(jugadorRojo)) {
             color = "red";
-        }else{
+        } else {
             color = "blue";
-        }        
-        boolean ingresar = tablero.ingresarLetra(pos, unJugador.getLetraParaJugar(),color);
+        }
+        boolean ingresar = tablero.ingresarLetra(pos, unJugador.getLetraParaJugar(), color);
+    }
+
+    public void mostrarPuntaje(Consola unaConsola) {
+        setPuntajeRojo(tablero.letraEnSecuencia(jugadorRojo.getLetraParaJugar(), "red"));
+        setPuntajeRojo(tablero.letraEnSecuencia(jugadorAzul.getLetraParaJugar(), "blue"));
+        
+        unaConsola.println("PUNTAJE:");
+        unaConsola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
+        unaConsola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
     }
 
 }
