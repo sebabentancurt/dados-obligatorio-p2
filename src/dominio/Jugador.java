@@ -87,7 +87,7 @@ public class Jugador implements Comparable<Jugador>{
     @Override
 
     public String toString() {
-        return this.getAlias() + " - Partidas ganadas: " + this.getPartidasGanadas();
+        return this.getAlias() + " - Partidas ganadas: " + this.getPartidasGanadas() + ". Partidas jugadas: " + this.getPartidasJugadas();
     }
     
     public int compareTo(Jugador unJugador){
