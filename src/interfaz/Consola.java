@@ -27,6 +27,7 @@ public class Consola {
         printlnGreen("¡Bienvenido a dados!");
     }
 
+    //Muestra menu y pide opcion
     public void menu(Sistema unSistema) {
         println("");
         println("1) Registrar Jugador");

@@ -92,6 +92,7 @@ public class Partida {
         this.abandono = unBoolean;
     }
 
+    //mientras el tablero este no este completo o ningun jugador abandone, se pide jugada a cada jugador
     public void jugar() {
         while (!this.getTablero().estaCompleto() || this.getAbandono()) {
 
@@ -111,12 +112,14 @@ public class Partida {
         this.terminarPartida();
     }
 
+    //se tira dados y se pide la juagada
     public void jugada(Jugador unJugador) {
         ArrayList<Integer> dados = tirarDados();
         Consola.println("");
         pedirJugada(dados, unJugador);
     }
 
+    //se pide juagada
     public void pedirJugada(ArrayList<Integer> dados, Jugador unJugador) {
         Consola.mostrarDados(dados);
         int dadoExtra = dados.remove(0);
@@ -144,6 +147,7 @@ public class Partida {
                     pedirJugada(dados, unJugador);
                 }
                 break;
+            //Caso numeros    
             default:
                 try {
                     String[] dadosSeleccionados = respuesta.split(" ");
@@ -168,7 +172,8 @@ public class Partida {
         }
 
     }
-
+    
+    //la tirada de dados depende del modo Test
     public ArrayList<Integer> tirarDados() {
         Dado[] dados = new Dado[5];
         ArrayList<Integer> numDados = new ArrayList();
@@ -185,7 +190,8 @@ public class Partida {
 
         return numDados;
     }
-
+    
+    //se fija si efectivamente salieron esos dados y si la posicion esta vacia
     public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
         if (dadoBase) {
             return tablero.posicionEstaVacia(dados.get(0));
@@ -202,6 +208,7 @@ public class Partida {
         }
     }
 
+    //ingesa letra en tablero
     public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, ArrayList<Integer> dados, Jugador unJugador,
             boolean dadoBase) {
         int posicion = 0;
@@ -244,6 +251,7 @@ public class Partida {
         }
     }
 
+    //busca posible solucion aumentado cada vez la cantidad de dados
     public void ayuda(ArrayList<Integer> dados) {
         boolean haySolucion = false;
         while (!haySolucion) {
@@ -312,7 +320,8 @@ public class Partida {
             }
         }
     }
-
+    
+    //decide ganador y agrega partidas jugadas y ganadas a cada jugador
     public void terminarPartida() {
         this.mostrarPuntaje();
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
