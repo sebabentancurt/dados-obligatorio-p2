@@ -68,7 +68,7 @@ public class Sistema {
         Consola.printGreen("Se va a comenzar el juego.");
         Consola.esperarParaContinuar();
         Consola.println("");
-        
+
         Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], modoTest);
         partida.jugar();
 
@@ -95,7 +95,7 @@ public class Sistema {
             Consola.printlnRed("El jugador ya ha sido seleccionado. Intente nuevamente");
             seleccionAzul = Consola.leerOpcion("Seleccione jugador azul:", 1, this.getListaJugadores().size());
         }
-        Jugador jugadorAzul = this.getListaJugadores().get(seleccionRojo - 1);
+        Jugador jugadorAzul = this.getListaJugadores().get(seleccionAzul - 1);
 
         jugadoresSeleccionados[0] = jugadorRojo;
         jugadoresSeleccionados[1] = jugadorAzul;
@@ -120,12 +120,12 @@ public class Sistema {
     public String[] seleccionarLetras() {
         String[] letrasSeleccionadas = new String[2];
 
-        String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo");
+        String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo").toUpperCase();
 
-        String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
+        String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul").toUpperCase();
         while (letraAzul.equals(letraRojo)) {
             Consola.printlnRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
-            letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
+            letraAzul = Consola.leerLetra("Ingrese letra jugador Azul").toUpperCase();
         }
 
         letrasSeleccionadas[0] = letraRojo;

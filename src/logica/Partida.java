@@ -119,33 +119,49 @@ public class Partida {
 
     public void pedirJugada(ArrayList<Integer> dados, Jugador unJugador) {
         Consola.mostrarDados(dados);
+        int dadoExtra = dados.remove(0);
+        ArrayList<Integer> jugada = new ArrayList<Integer>();
 
-        String respuesta = Consola.leerString("Ingrese jugada");
+        String respuesta = Consola.leerString("Ingrese jugada:").trim();
         switch (respuesta) {
             case "A":
-                ayuda(dados);
-                pedirJugada(dados, unJugador);
+                this.ayuda(dados);
+                this.pedirJugada(dados, unJugador);
                 break;
             case "P":
-                Consola.println("Paso de turno");
+                Consola.printGreen("Paso de turno");
                 Consola.esperarParaContinuar();
                 break;
             case "X":
-                abandonar(unJugador);
+                this.abandonar(unJugador);
                 break;
-            default:
-                String[] respuestaArray = respuesta.split(" ");
-
-                ArrayList<Integer> jugada = new ArrayList<Integer>();
-                for (String num : respuestaArray) {
-                    jugada.add(Integer.parseInt(num));
-                }
-
-                if (verificarJugada(jugada, dados)) {
-                    aplicarJugadaEnTablero(jugada, dados, unJugador);
+            case "0":
+                jugada.add(dadoExtra);
+                if (verificarJugada(jugada, dados, true)) {
+                    aplicarJugadaEnTablero(jugada, dados, unJugador, true);
                 } else {
                     Consola.printlnRed("Jugada no valida, vuelva a ingresar");
                     pedirJugada(dados, unJugador);
+                }
+                break;
+            default:
+                try {
+                    String[] dadosSeleccionados = respuesta.split(" ");
+
+                    for (String dadoSeleccionado : dadosSeleccionados) {
+                        jugada.add(Integer.parseInt(dadoSeleccionado));
+                    }
+
+                    if (verificarJugada(jugada, dados, false)) {
+                        aplicarJugadaEnTablero(jugada, dados, unJugador, false);
+                    } else {
+                        Consola.printlnRed("Jugada no valida, vuelva a ingresar");
+                        pedirJugada(dados, unJugador);
+                    }
+                } catch (NumberFormatException e) {
+                    Consola.printlnRed("Jugada no valida. Intente nuevamente.");
+                    Consola.println("");
+                    this.pedirJugada(dados, unJugador);
                 }
 
                 break;
@@ -170,8 +186,8 @@ public class Partida {
         return numDados;
     }
 
-    public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados) {
-        if (jugada.size() == 1 && jugada.contains(0)) {
+    public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
+        if (dadoBase) {
             return tablero.posicionEstaVacia(dados.get(0));
         } else {
             int total = dados.get(0);
@@ -186,8 +202,9 @@ public class Partida {
         }
     }
 
-    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, ArrayList<Integer> dados, Jugador unJugador) {
-        int pos = 0;
+    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, ArrayList<Integer> dados, Jugador unJugador,
+            boolean dadoBase) {
+        int posicion = 0;
         String color;
 
         if (unJugador.equals(jugadorRojo)) {
@@ -196,15 +213,15 @@ public class Partida {
             color = "blue";
         }
 
-        if (jugada.size() == 1 && jugada.contains(0)) {
-            pos = jugada.get(0);
+        if (dadoBase) {
+            posicion = jugada.get(0);
         } else {
-            pos = dados.get(0);
-            for (Integer num : jugada) {
-                pos += jugada.get(num);
+            posicion = dados.get(0);
+            for (Integer dado : jugada) {
+                posicion += jugada.get(dado);
             }
         }
-        this.getTablero().ingresarLetra(pos, unJugador.getLetraParaJugar(), color);
+        this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
     }
 
     public void mostrarPuntaje() {
