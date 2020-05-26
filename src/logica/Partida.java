@@ -96,14 +96,13 @@ public class Partida {
         while (!this.getTablero().estaCompleto() || this.getAbandono()) {
 
             mostrarPuntaje();
-
             Consola.mostrarTablero(this.getTablero().getMatriz());
 
-            Consola.printGreen("Turno de jugador rojo");
+            Consola.printlnGreen("Turno de jugador rojo");
             jugada(getJugadorRojo());
 
             mostrarPuntaje();
-
+            Consola.println("");
             Consola.mostrarTablero(getTablero().getMatriz());
 
             Consola.printlnGreen("Turno de jugador azul");
@@ -114,6 +113,7 @@ public class Partida {
 
     public void jugada(Jugador unJugador) {
         ArrayList<Integer> dados = tirarDados();
+        Consola.println("");
         pedirJugada(dados, unJugador);
     }
 
@@ -127,7 +127,8 @@ public class Partida {
                 pedirJugada(dados, unJugador);
                 break;
             case "P":
-                Consola.println("PASA DE TURNO");
+                Consola.println("Paso de turno");
+                Consola.esperarParaContinuar();
                 break;
             case "X":
                 abandonar(unJugador);
@@ -158,7 +159,7 @@ public class Partida {
 
         for (int i = 0; i < dados.length; i++) {
             if (this.getModoTest()) {
-                dados[i] = new Dado(Consola.leerOpcion("Ingrese numero de dado", 1, 6));
+                dados[i] = new Dado(Consola.leerOpcion("Ingrese número de dado: (1-6)", 1, 6));
             } else {
                 dados[i] = new Dado();
             }
@@ -210,9 +211,10 @@ public class Partida {
         setPuntajeRojo(tablero.letraEnSecuencia(jugadorRojo.getLetraParaJugar(), "red"));
         setPuntajeAzul(tablero.letraEnSecuencia(jugadorAzul.getLetraParaJugar(), "blue"));
 
-        Consola.println("PUNTAJE:");
+        Consola.printlnGreen("Puntaje:");
         Consola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
         Consola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
+        Consola.println("");
     }
 
     public void abandonar(Jugador unJugador) {

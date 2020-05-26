@@ -64,9 +64,10 @@ public class Sistema {
             jugadoresSeleccionados[i].setLetraParaJugar(letrasSeleccionadas[i]);
         }
         boolean modoTest = Consola.consultaModoTest();
-
+        Consola.println("");
         Consola.printGreen("Se va a comenzar el juego.");
         Consola.esperarParaContinuar();
+        Consola.println("");
         
         Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], modoTest);
         partida.jugar();

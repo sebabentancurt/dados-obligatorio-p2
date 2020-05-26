@@ -171,24 +171,27 @@ public class Consola {
     }
 
     public static void mostrarDados(ArrayList<Integer> dados) {
-        print("base: " + dados.get(0) + " ");
+        Consola.printGreen("Base: " + dados.get(0) + " ");
 
-        print("extras: ");
+        Consola.printGreen("Extras: ");
         for (int i = 1; i < dados.size(); i++) {
-            print(dados.get(i) + " ");
+            printGreen(dados.get(i) + " ");
         }
+        Consola.println("");
     }
 
     /**
      * Imprime la matriz formateada
      */
     public static void mostrarTablero(String[][] matriz) {
+        Consola.printlnGreen("Tablero:");
         for (int i = 0; i < Tablero.FILAS; i++) {
             for (int j = 0; j < Tablero.COLUMNAS; j++) {
                 Consola.print(String.format("%15s", matriz[i][j]) +" ");
             }
             Consola.println("");
         }
+        Consola.println("");
     }
 
     public static void printlnGreen(String value) {
