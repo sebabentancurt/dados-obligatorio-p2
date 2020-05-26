@@ -113,18 +113,20 @@ public class Partida {
     }
 
     /**
-     * Mientras el tablero este no este completo o ningun jugador abandone, se
-     * pide jugada a cada jugador
+     * Mientras el tablero este no este completo o ningun jugador abandone, se pide
+     * jugada a cada jugador
      */
     public void jugar() {
         String colorJugador = "rojo";
+        Jugador unJugador;
         while (!this.getTablero().estaCompleto() && !this.getAbandono()) {
-
+            unJugador = getJugadorByColor(colorJugador);
             mostrarPuntaje();
             Consola.mostrarTablero(this.getTablero().getMatriz());
 
-            Consola.println(Color.addColorToString("Turno de jugador " + colorJugador, colorJugador));
-            jugada(getJugadorByColor(colorJugador));
+            Consola.println(Color.addColorToString("Turno de jugador " + colorJugador + " - " + unJugador.getAlias(),
+                    colorJugador));
+            jugada(unJugador);
 
             if (colorJugador.equals("rojo")) {
                 colorJugador = "azul";
@@ -170,20 +172,20 @@ public class Partida {
             // Caso numeros
             default:
                 try {
-                String[] dadosSeleccionados = respuesta.split(" ");
+                    String[] dadosSeleccionados = respuesta.split(" ");
 
-                for (String dadoSeleccionado : dadosSeleccionados) {
-                    jugada.add(Integer.parseInt(dadoSeleccionado));
+                    for (String dadoSeleccionado : dadosSeleccionados) {
+                        jugada.add(Integer.parseInt(dadoSeleccionado));
+                    }
+                    this.jugarDados(unJugador, jugada, dados, false);
+
+                } catch (NumberFormatException e) {
+                    Consola.printlnRed("Jugada no valida. Intente nuevamente.");
+                    Consola.println("");
+                    this.pedirJugada(dados, unJugador);
                 }
-                this.jugarDados(unJugador, jugada, dados, false);
 
-            } catch (NumberFormatException e) {
-                Consola.printlnRed("Jugada no valida. Intente nuevamente.");
-                Consola.println("");
-                this.pedirJugada(dados, unJugador);
-            }
-
-            break;
+                break;
         }
 
     }
@@ -254,16 +256,16 @@ public class Partida {
         Boolean ingreso = this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
 
         if (!ingreso) {
-            Consola.printlnRed("La posicion " + posicion + " ya ha sido jugada");
+            Consola.printlnRed("La posicion " + posicion + " ya ha sido jugada o no existe.");
         }
 
         return ingreso;
     }
 
-    public void calcularPuntaje() {
-        int puntajeRojo = this.tablero.letraEnSecuencia(this.getJugadorRojo().getLetraParaJugar(), "red");
-        int puntajeAzul = this.tablero.letraEnSecuencia(this.getJugadorAzul().getLetraParaJugar(), "blue");
-        
+    public void calcularYMostrarPuntaje() {
+        this.tablero.letraEnSecuencia(this.getJugadorRojo().getLetraParaJugar(), "red");
+        this.tablero.letraEnSecuencia(this.getJugadorAzul().getLetraParaJugar(), "blue");
+
         this.mostrarPuntaje();
     }
 
@@ -357,9 +359,10 @@ public class Partida {
 
     // decide ganador y agrega partidas jugadas y ganadas a cada jugador
     public void terminarPartida() {
-        if(!this.getAbandono()){
-        this.mostrarPuntaje();
+        if (!this.getAbandono()) {
+            this.mostrarPuntaje();
         }
+
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
         this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
 
