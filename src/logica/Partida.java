@@ -43,6 +43,21 @@ public class Partida {
         return jugadorAzul;
     }
 
+    /**
+     * Obtiene un jugador a parti de su color
+     * @param color
+     * @return
+     */
+    public Jugador getJugadorByColor(String color) {
+        Jugador jugador = jugadorRojo;
+
+        if (color.equals("azul")) {
+            jugador = this.jugadorAzul;
+        }
+
+        return jugador;
+    }
+
     public boolean getModoTest() {
         return modoTest;
     }
@@ -92,38 +107,41 @@ public class Partida {
         this.abandono = unBoolean;
     }
 
-    //mientras el tablero este no este completo o ningun jugador abandone, se pide jugada a cada jugador
+    // mientras el tablero este no este completo o ningun jugador abandone, se pide
+    // jugada a cada jugador
     public void jugar() {
+        String colorJugador = "rojo";
         while (!this.getTablero().estaCompleto() || this.getAbandono()) {
 
             mostrarPuntaje();
             Consola.mostrarTablero(this.getTablero().getMatriz());
 
-            Consola.printlnGreen("Turno de jugador rojo");
-            jugada(getJugadorRojo());
+            Consola.printlnGreen("Turno de jugador " + colorJugador);
+            jugada(getJugadorByColor(colorJugador));
 
-            mostrarPuntaje();
-            Consola.println("");
-            Consola.mostrarTablero(getTablero().getMatriz());
-
-            Consola.printlnGreen("Turno de jugador azul");
-            jugada(getJugadorAzul());
+            if (colorJugador.equals("rojo")) {
+                colorJugador = "azul";
+            }else{
+                colorJugador = "rojo";
+            }
         }
         this.terminarPartida();
     }
 
-    //se tira dados y se pide la juagada
+    // se tira dados y se pide la juagada
     public void jugada(Jugador unJugador) {
         ArrayList<Integer> dados = tirarDados();
         Consola.println("");
         pedirJugada(dados, unJugador);
     }
 
-    //se pide juagada
+    // se pide juagada
     public void pedirJugada(ArrayList<Integer> dados, Jugador unJugador) {
         Consola.mostrarDados(dados);
-        int dadoExtra = dados.remove(0);
+        int dadoBase = dados.get(0);
         ArrayList<Integer> jugada = new ArrayList<Integer>();
+        Integer posicion = -1;
+        Boolean jugadaValida = false;
 
         String respuesta = Consola.leerString("Ingrese jugada:").trim();
         switch (respuesta) {
@@ -139,15 +157,20 @@ public class Partida {
                 this.abandonar(unJugador);
                 break;
             case "0":
-                jugada.add(dadoExtra);
-                if (verificarJugada(jugada, dados, true)) {
-                    aplicarJugadaEnTablero(jugada, dados, unJugador, true);
+                jugada.add(dadoBase);
+                posicion = posicionJugada(jugada, dados, true);
+                jugadaValida = !posicion.equals(-1);
+                if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
+                    Consola.printlnGreen("Jugando posición " + posicion);
+                    Consola.esperarParaContinuar();
+                    Consola.println("");
                 } else {
-                    Consola.printlnRed("Jugada no valida, vuelva a ingresar");
+                    Consola.printlnRed("Jugada no válida, intente nuevamente.");
+                    Consola.esperarParaContinuar();
                     pedirJugada(dados, unJugador);
                 }
                 break;
-            //Caso numeros    
+            // Caso numeros
             default:
                 try {
                     String[] dadosSeleccionados = respuesta.split(" ");
@@ -156,12 +179,17 @@ public class Partida {
                         jugada.add(Integer.parseInt(dadoSeleccionado));
                     }
 
-                    if (verificarJugada(jugada, dados, false)) {
-                        aplicarJugadaEnTablero(jugada, dados, unJugador, false);
+                    posicion = posicionJugada(jugada, dados, true);
+                    jugadaValida = posicion.equals(-1);
+                    if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
+                        Consola.printlnGreen("Jugada valida.");
+                        Consola.esperarParaContinuar();
+                        pedirJugada(dados, unJugador);
                     } else {
                         Consola.printlnRed("Jugada no valida, vuelva a ingresar");
-                        pedirJugada(dados, unJugador);
+                        Consola.esperarParaContinuar();
                     }
+                    break;
                 } catch (NumberFormatException e) {
                     Consola.printlnRed("Jugada no valida. Intente nuevamente.");
                     Consola.println("");
@@ -172,8 +200,8 @@ public class Partida {
         }
 
     }
-    
-    //la tirada de dados depende del modo Test
+
+    // la tirada de dados depende del modo Test
     public ArrayList<Integer> tirarDados() {
         Dado[] dados = new Dado[5];
         ArrayList<Integer> numDados = new ArrayList();
@@ -190,45 +218,39 @@ public class Partida {
 
         return numDados;
     }
-    
-    //se fija si efectivamente salieron esos dados y si la posicion esta vacia
-    public boolean verificarJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
-        if (dadoBase) {
-            return tablero.posicionEstaVacia(dados.get(0));
-        } else {
-            int total = dados.get(0);
-            for (int i = 0; i < jugada.size(); i++) {
-                if (!dados.contains(jugada.get(i))) {
-                    return false;
-                }
-                total += jugada.get(i);
-            }
 
-            return tablero.posicionEstaVacia(total);
+    /**
+     * Se fija si efectivamente salieron esos dados y si la posicion esta vacia
+     * 
+     * @param jugada
+     * @param dados
+     * @param dadoBase
+     * @return
+     */
+    public Integer posicionJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
+        int posicion = dados.get(0);
+        if (!dadoBase) {
+            for (Integer dadoJugado : jugada) {
+                boolean existeDado = dados.remove(dadoJugado);
+                if (!existeDado) {
+                    Consola.printlnRed("Se intento usar un dado que no existe para la jugada.");
+                    return -1;
+                }
+                posicion += dadoJugado;
+            }
         }
+        return posicion;
     }
 
-    //ingesa letra en tablero
-    public void aplicarJugadaEnTablero(ArrayList<Integer> jugada, ArrayList<Integer> dados, Jugador unJugador,
-            boolean dadoBase) {
-        int posicion = 0;
-        String color;
+    // ingesa letra en tablero
+    public Boolean aplicarJugadaEnTablero(Jugador unJugador, int posicion) {
+        String color = "blue";
 
         if (unJugador.equals(jugadorRojo)) {
             color = "red";
-        } else {
-            color = "blue";
         }
 
-        if (dadoBase) {
-            posicion = jugada.get(0);
-        } else {
-            posicion = dados.get(0);
-            for (Integer dado : jugada) {
-                posicion += jugada.get(dado);
-            }
-        }
-        this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
+        return this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
     }
 
     public void mostrarPuntaje() {
@@ -251,7 +273,7 @@ public class Partida {
         }
     }
 
-    //busca posible solucion aumentado cada vez la cantidad de dados
+    // busca posible solucion aumentado cada vez la cantidad de dados
     public void ayuda(ArrayList<Integer> dados) {
         boolean haySolucion = false;
         while (!haySolucion) {
@@ -320,8 +342,8 @@ public class Partida {
             }
         }
     }
-    
-    //decide ganador y agrega partidas jugadas y ganadas a cada jugador
+
+    // decide ganador y agrega partidas jugadas y ganadas a cada jugador
     public void terminarPartida() {
         this.mostrarPuntaje();
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
