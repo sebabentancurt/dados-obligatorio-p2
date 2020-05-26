@@ -21,17 +21,20 @@ public class Partida {
 
     private Jugador jugadorRojo;
     private Jugador jugadorAzul;
-    private int scoreRojo = 0;
-    private int scoreAzul = 0;
+    private int scoreRojo;
+    private int scoreAzul;
     private boolean modoTest;
     private Tablero tablero;
-    private boolean abandono = false;
+    private boolean abandono;
 
     public Partida(Jugador unJugadorRojo, Jugador unJugadorAzul, boolean modoTest) {
         this.setJugadorRojo(unJugadorRojo);
         this.setJugadorAzul(unJugadorAzul);
+        this.setPuntajeRojo(0);
+        this.setPuntajeAzul(0);
         this.setModoTest(modoTest);
         this.setTablero();
+        this.setAbandono(false);
 
     }
 
