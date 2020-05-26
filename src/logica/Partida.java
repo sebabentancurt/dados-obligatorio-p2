@@ -108,11 +108,12 @@ public class Partida {
         this.abandono = unBoolean;
     }
 
-    // mientras el tablero este no este completo o ningun jugador abandone, se pide
-    // jugada a cada jugador
+    /**
+     * Mientras el tablero este no este completo o ningun jugador abandone, se pide jugada a cada jugador
+     */
     public void jugar() {
         String colorJugador = "rojo";
-        while (!this.getTablero().estaCompleto() || this.getAbandono()) {
+        while (!this.getTablero().estaCompleto() && !this.getAbandono()) {
 
             mostrarPuntaje();
             Consola.mostrarTablero(this.getTablero().getMatriz());
@@ -265,8 +266,9 @@ public class Partida {
     }
 
     public void abandonar(Jugador unJugador) {
-        this.mostrarPuntaje();
         this.setAbandono(true);
+        Consola.println("");
+        Consola.printlnGreen("Jugador " + unJugador.getAlias() + " abandonó la partida.");
         if (unJugador.equals(this.getJugadorRojo())) {
             this.setPuntajeRojo(-1);
         } else {
@@ -351,13 +353,13 @@ public class Partida {
         this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
 
         if (this.getPuntajeRojo() > this.getPuntajeAzul()) {
-            Consola.println("Ganador: " + this.getJugadorRojo().getAlias());
+            Consola.println("La partida fue ganada por " + this.getJugadorRojo().getAlias());
             this.getJugadorRojo().setPartidasGanadas(this.getJugadorRojo().getPartidasGanadas() + 1);
         } else if (this.getPuntajeRojo() < this.getPuntajeAzul()) {
-            Consola.println("Ganador: " + this.getJugadorAzul().getAlias());
+            Consola.println("La partida fue ganada por " + this.getJugadorAzul().getAlias());
             this.getJugadorAzul().setPartidasGanadas(this.getJugadorAzul().getPartidasGanadas() + 1);
         } else if (this.getPuntajeRojo() == this.getPuntajeAzul()) {
-            Consola.println("EMPATE");
+            Consola.println("La partida terminó en empate.");
         }
     }
 
