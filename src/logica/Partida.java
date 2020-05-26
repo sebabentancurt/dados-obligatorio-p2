@@ -357,7 +357,9 @@ public class Partida {
 
     // decide ganador y agrega partidas jugadas y ganadas a cada jugador
     public void terminarPartida() {
+        if(!this.getAbandono()){
         this.mostrarPuntaje();
+        }
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
         this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
 
