@@ -9,6 +9,7 @@ package logica;
 import dominio.Dado;
 import dominio.Jugador;
 import dominio.Tablero;
+import helper.Color;
 import interfaz.Consola;
 import java.util.ArrayList;
 
@@ -116,7 +117,7 @@ public class Partida {
             mostrarPuntaje();
             Consola.mostrarTablero(this.getTablero().getMatriz());
 
-            Consola.printlnGreen("Turno de jugador " + colorJugador);
+            Consola.println(Color.addColorToString("Turno de jugador " + colorJugador, colorJugador));
             jugada(getJugadorByColor(colorJugador));
 
             if (colorJugador.equals("rojo")) {
@@ -140,8 +141,6 @@ public class Partida {
         Consola.mostrarDados(dados);
         int dadoBase = dados.get(0);
         ArrayList<Integer> jugada = new ArrayList<Integer>();
-        Integer posicion = -1;
-        Boolean jugadaValida = false;
 
         String respuesta = Consola.leerString("Ingrese jugada:").trim();
         switch (respuesta) {
@@ -158,17 +157,9 @@ public class Partida {
                 break;
             case "0":
                 jugada.add(dadoBase);
-                posicion = posicionJugada(jugada, dados, true);
-                jugadaValida = !posicion.equals(-1);
-                if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
-                    Consola.printlnGreen("Jugando posición " + posicion);
-                    Consola.esperarParaContinuar();
-                    Consola.println("");
-                } else {
-                    Consola.printlnRed("Jugada no válida, intente nuevamente.");
-                    Consola.esperarParaContinuar();
-                    pedirJugada(dados, unJugador);
-                }
+
+                this.jugarDados(unJugador, jugada, dados, true);
+
                 break;
             // Caso numeros
             default:
@@ -178,18 +169,8 @@ public class Partida {
                     for (String dadoSeleccionado : dadosSeleccionados) {
                         jugada.add(Integer.parseInt(dadoSeleccionado));
                     }
+                    this.jugarDados(unJugador, jugada, dados, false);
 
-                    posicion = posicionJugada(jugada, dados, true);
-                    jugadaValida = posicion.equals(-1);
-                    if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
-                        Consola.printlnGreen("Jugada valida.");
-                        Consola.esperarParaContinuar();
-                        pedirJugada(dados, unJugador);
-                    } else {
-                        Consola.printlnRed("Jugada no valida, vuelva a ingresar");
-                        Consola.esperarParaContinuar();
-                    }
-                    break;
                 } catch (NumberFormatException e) {
                     Consola.printlnRed("Jugada no valida. Intente nuevamente.");
                     Consola.println("");
@@ -199,6 +180,20 @@ public class Partida {
                 break;
         }
 
+    }
+
+    public void jugarDados(Jugador unJugador, ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase){
+        Integer posicion = posicionJugada(jugada, new ArrayList<Integer>(dados), dadoBase);
+        boolean jugadaValida = !posicion.equals(-1);
+        if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
+            Consola.printlnGreen("Jugando en posicion: " + posicion);
+            Consola.esperarParaContinuar();
+            Consola.println("");
+        } else {
+            Consola.printlnRed("Jugada no valida, vuelva a ingresar");
+            Consola.esperarParaContinuar();
+            this.pedirJugada(dados, unJugador);
+        }
     }
 
     // la tirada de dados depende del modo Test
@@ -213,7 +208,6 @@ public class Partida {
                 dados[i] = new Dado();
             }
             numDados.add(dados[i].getNumero());
-
         }
 
         return numDados;
@@ -230,10 +224,11 @@ public class Partida {
     public Integer posicionJugada(ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
         int posicion = dados.get(0);
         if (!dadoBase) {
+            dados.remove(0);
             for (Integer dadoJugado : jugada) {
                 boolean existeDado = dados.remove(dadoJugado);
                 if (!existeDado) {
-                    Consola.printlnRed("Se intento usar un dado que no existe para la jugada.");
+                    Consola.printlnRed("Se intento usar un dado no valido para la jugada.");
                     return -1;
                 }
                 posicion += dadoJugado;
@@ -250,7 +245,13 @@ public class Partida {
             color = "red";
         }
 
-        return this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
+        Boolean ingreso = this.getTablero().ingresarLetra(posicion, unJugador.getLetraParaJugar(), color);
+
+        if (!ingreso) {
+            Consola.printlnRed("La posicion " + posicion + " ya ha sido jugada");
+        }
+
+        return ingreso;
     }
 
     public void mostrarPuntaje() {

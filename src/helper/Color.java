@@ -22,9 +22,11 @@ public class Color {
     public static String addColorToString(String value, String color) {
         String prefix = "";
         switch (color) {
+            case "rojo":
             case "red":
                 prefix = ANSI_RED;
                 break;
+            case "azul":
             case "blue":
                 prefix = ANSI_BLUE;
                 break;
