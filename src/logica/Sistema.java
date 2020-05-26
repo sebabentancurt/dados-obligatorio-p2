@@ -53,12 +53,83 @@ public class Sistema {
         Consola.esperarParaContinuar();
     }
 
-    /*public void comenzarPartida() {
-        
-    }*/
-
     public boolean existeJugador(Jugador unJugador){
         return this.getListaJugadores().contains(unJugador);
     }
 
+    public void crearPartida() {
+        Jugador[] jugadoresSeleccionados = this.seleccionarJugadores();
+        String[] letrasSeleccionadas = seleccionarLetras();
+        for (int i = 0; i < jugadoresSeleccionados.length; i++){
+            jugadoresSeleccionados[i].setLetraParaJugar(letrasSeleccionadas[i]);
+        }
+        boolean modoTest = Consola.consultaModoTest();
+
+        Consola.printGreen("Se va a comenzar el juego.");
+        Consola.esperarParaContinuar();
+        
+        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], modoTest);
+        partida.jugar();
+
+    }
+
+    /**
+     * Retorna dos jugadores seleccionados de la lista completa de jugadores
+     *
+     * @param unSistema
+     * @return
+     */
+    public Jugador[] seleccionarJugadores() {
+
+        Jugador[] jugadoresSeleccionados = new Jugador[2];
+
+        this.imprimirListaJugadores();
+        Consola.println("");
+
+        Integer seleccionRojo = Consola.leerOpcion("Seleccione jugador rojo:", 1, this.getListaJugadores().size());
+        Jugador jugadorRojo = this.getListaJugadores().get(seleccionRojo - 1);
+
+        Integer seleccionAzul = Consola.leerOpcion("Seleccione jugador azul:", 1, this.getListaJugadores().size());
+        while (seleccionRojo.equals(seleccionAzul)) {
+            Consola.printlnRed("El jugador ya ha sido seleccionado. Intente nuevamente");
+            seleccionAzul = Consola.leerOpcion("Seleccione jugador azul:", 1, this.getListaJugadores().size());
+        }
+        Jugador jugadorAzul = this.getListaJugadores().get(seleccionRojo - 1);
+
+        jugadoresSeleccionados[0] = jugadorRojo;
+        jugadoresSeleccionados[1] = jugadorAzul;
+
+        return jugadoresSeleccionados;
+    }
+
+    /**
+     * Imprime la lista de jugadores de no ser vacia
+     *
+     */
+    public void imprimirListaJugadores() {
+        if (this.getListaJugadores().isEmpty()) {
+            Consola.printlnRed("No existen jugadores registrados.");
+        } else {
+            for (int i = 0; i < this.getListaJugadores().size(); i++) {
+                Consola.println((i + 1) + ") " + this.getListaJugadores().get(i));
+            }
+        }
+    }
+
+    public String[] seleccionarLetras() {
+        String[] letrasSeleccionadas = new String[2];
+
+        String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo");
+
+        String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
+        while (letraAzul.equals(letraRojo)) {
+            Consola.printlnRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
+            letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
+        }
+
+        letrasSeleccionadas[0] = letraRojo;
+        letrasSeleccionadas[1] = letraAzul;
+
+        return letrasSeleccionadas;
+    }
 }

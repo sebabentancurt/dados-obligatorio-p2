@@ -34,7 +34,7 @@ public class Partida {
 
     }
 
-    //Getters
+    // Getters
     public Jugador getJugadorRojo() {
         return jugadorRojo;
     }
@@ -63,7 +63,7 @@ public class Partida {
         return abandono;
     }
 
-    //Setters
+    // Setters
     public void setJugadorRojo(Jugador unJugador) {
         this.jugadorRojo = unJugador;
     }
@@ -92,42 +92,42 @@ public class Partida {
         this.abandono = unBoolean;
     }
 
-    public void jugar(Consola unaConsola) {
+    public void jugar() {
         while (!this.getTablero().estaCompleto() || this.getAbandono()) {
 
-            mostrarPuntaje(unaConsola);
+            mostrarPuntaje();
 
-            unaConsola.mostrarTablero(this.getTablero().getMatriz());
+            Consola.mostrarTablero(this.getTablero().getMatriz());
 
-            unaConsola.printGreen("TURNO DE JUGADOR ROJO");
-            jugada(unaConsola, getJugadorRojo());
+            Consola.printGreen("Turno de jugador rojo");
+            jugada(getJugadorRojo());
 
-            mostrarPuntaje(unaConsola);
+            mostrarPuntaje();
 
-            unaConsola.mostrarTablero(getTablero().getMatriz());
-            
-            unaConsola.printlnGreen("TURNO DE JUGADOR AZUL");
-            jugada(unaConsola, getJugadorAzul());
+            Consola.mostrarTablero(getTablero().getMatriz());
+
+            Consola.printlnGreen("Turno de jugador azul");
+            jugada(getJugadorAzul());
         }
-        this.terminarPartida(unaConsola);
+        this.terminarPartida();
     }
 
-    public void jugada(Consola unaConsola, Jugador unJugador) {
-        ArrayList<Integer> dados = tirarDados(unaConsola);
-        pedirJugada(unaConsola, dados, unJugador);
+    public void jugada(Jugador unJugador) {
+        ArrayList<Integer> dados = tirarDados();
+        pedirJugada(dados, unJugador);
     }
 
-    public void pedirJugada(Consola unaConsola, ArrayList<Integer> dados, Jugador unJugador) {
-        unaConsola.mostrarDados(dados);
+    public void pedirJugada(ArrayList<Integer> dados, Jugador unJugador) {
+        Consola.mostrarDados(dados);
 
-        String respuesta = unaConsola.leerString("Ingrese jugada");
+        String respuesta = Consola.leerString("Ingrese jugada");
         switch (respuesta) {
             case "A":
-                ayuda(unaConsola, dados);
-                pedirJugada(unaConsola, dados, unJugador);
+                ayuda(dados);
+                pedirJugada(dados, unJugador);
                 break;
             case "P":
-                unaConsola.println("PASA DE TURNO");
+                Consola.println("PASA DE TURNO");
                 break;
             case "X":
                 abandonar(unJugador);
@@ -143,8 +143,8 @@ public class Partida {
                 if (verificarJugada(jugada, dados)) {
                     aplicarJugadaEnTablero(jugada, dados, unJugador);
                 } else {
-                    unaConsola.printlnRed("Jugada no valida, vuelva a ingresar");
-                    pedirJugada(unaConsola, dados, unJugador);
+                    Consola.printlnRed("Jugada no valida, vuelva a ingresar");
+                    pedirJugada(dados, unJugador);
                 }
 
                 break;
@@ -152,13 +152,13 @@ public class Partida {
 
     }
 
-    public ArrayList<Integer> tirarDados(Consola unaConsola) {
+    public ArrayList<Integer> tirarDados() {
         Dado[] dados = new Dado[5];
         ArrayList<Integer> numDados = new ArrayList();
 
         for (int i = 0; i < dados.length; i++) {
             if (this.getModoTest()) {
-                dados[i] = new Dado(unaConsola.leerOpcion("Ingrese numero de dado", 1, 6));
+                dados[i] = new Dado(Consola.leerOpcion("Ingrese numero de dado", 1, 6));
             } else {
                 dados[i] = new Dado();
             }
@@ -194,7 +194,7 @@ public class Partida {
         } else {
             color = "blue";
         }
-        
+
         if (jugada.size() == 1 && jugada.contains(0)) {
             pos = jugada.get(0);
         } else {
@@ -206,13 +206,13 @@ public class Partida {
         this.getTablero().ingresarLetra(pos, unJugador.getLetraParaJugar(), color);
     }
 
-    public void mostrarPuntaje(Consola unaConsola) {
+    public void mostrarPuntaje() {
         setPuntajeRojo(tablero.letraEnSecuencia(jugadorRojo.getLetraParaJugar(), "red"));
         setPuntajeAzul(tablero.letraEnSecuencia(jugadorAzul.getLetraParaJugar(), "blue"));
 
-        unaConsola.println("PUNTAJE:");
-        unaConsola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
-        unaConsola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
+        Consola.println("PUNTAJE:");
+        Consola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
+        Consola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
     }
 
     public void abandonar(Jugador unJugador) {
@@ -224,42 +224,43 @@ public class Partida {
         }
     }
 
-    public void ayuda(Consola unaConsola, ArrayList<Integer> dados) {
+    public void ayuda(ArrayList<Integer> dados) {
         boolean haySolucion = false;
         while (!haySolucion) {
-            //dado base
+            // dado base
             if (this.tablero.posicionEstaVacia(dados.get(0))) {
-                unaConsola.println("0");
+                Consola.println("0");
                 haySolucion = true;
                 break;
             }
 
-            //dado base + 1
+            // dado base + 1
             for (int i = 1; i < dados.size(); i++) {
                 if (this.tablero.posicionEstaVacia(dados.get(0) + dados.get(i))) {
-                    unaConsola.println("" + dados.get(i));
+                    Consola.println("" + dados.get(i));
                     haySolucion = true;
                     break;
                 }
             }
 
-            //dado base + 2
+            // dado base + 2
             for (int i = 1; i < dados.size(); i++) {
                 for (int j = 1; j < dados.size(); j++) {
                     if (i != j && this.tablero.posicionEstaVacia(dados.get(0) + dados.get(i) + dados.get(j))) {
-                        unaConsola.println(dados.get(i) + " + " + dados.get(j));
+                        Consola.println(dados.get(i) + " + " + dados.get(j));
                         haySolucion = true;
                         break;
                     }
                 }
             }
 
-            //dado base + 3
+            // dado base + 3
             for (int i = 1; i < dados.size(); i++) {
                 for (int j = 1; j < dados.size(); j++) {
                     for (int k = 1; k < dados.size(); k++) {
-                        if (i != j && j != k && this.tablero.posicionEstaVacia(dados.get(0) + dados.get(i) + dados.get(j) + dados.get(k))) {
-                            unaConsola.println(dados.get(i) + " + " + dados.get(j) + " + " + dados.get(k));
+                        if (i != j && j != k && this.tablero
+                                .posicionEstaVacia(dados.get(0) + dados.get(i) + dados.get(j) + dados.get(k))) {
+                            Consola.println(dados.get(i) + " + " + dados.get(j) + " + " + dados.get(k));
                             haySolucion = true;
                             break;
                         }
@@ -268,13 +269,15 @@ public class Partida {
                 }
             }
 
-            //dado base + 4
+            // dado base + 4
             for (int i = 1; i < dados.size(); i++) {
                 for (int j = 1; j < dados.size(); j++) {
                     for (int k = 1; k < dados.size(); k++) {
                         for (int l = 1; l < dados.size(); l++) {
-                            if (i != j && j != k && k != l && this.tablero.posicionEstaVacia(dados.get(0) + dados.get(i) + dados.get(j) + dados.get(k) + dados.get(l))) {
-                                unaConsola.println(dados.get(i) + " + " + dados.get(j) + " + " + dados.get(k) + " + " + dados.get(l));
+                            if (i != j && j != k && k != l && this.tablero.posicionEstaVacia(
+                                    dados.get(0) + dados.get(i) + dados.get(j) + dados.get(k) + dados.get(l))) {
+                                Consola.println(dados.get(i) + " + " + dados.get(j) + " + " + dados.get(k) + " + "
+                                        + dados.get(l));
                                 haySolucion = true;
                                 break;
                             }
@@ -283,25 +286,25 @@ public class Partida {
                 }
             }
 
-            //no hay solucion
+            // no hay solucion
             if (!haySolucion) {
-                unaConsola.println("P");
+                Consola.println("P");
             }
         }
     }
 
-    public void terminarPartida(Consola unaConsola) {
+    public void terminarPartida() {
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
         this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
-        
+
         if (this.getPuntajeRojo() > this.getPuntajeAzul()) {
-            unaConsola.println("Ganador: " + this.getJugadorRojo().getAlias());
+            Consola.println("Ganador: " + this.getJugadorRojo().getAlias());
             this.getJugadorRojo().setPartidasGanadas(this.getJugadorRojo().getPartidasGanadas() + 1);
         } else if (this.getPuntajeRojo() < this.getPuntajeAzul()) {
-            unaConsola.println("Ganador: " + this.getJugadorAzul().getAlias());
+            Consola.println("Ganador: " + this.getJugadorAzul().getAlias());
             this.getJugadorAzul().setPartidasGanadas(this.getJugadorAzul().getPartidasGanadas() + 1);
         } else if (this.getPuntajeRojo() == this.getPuntajeAzul()) {
-            unaConsola.println("EMPATE");
+            Consola.println("EMPATE");
         }
     }
 

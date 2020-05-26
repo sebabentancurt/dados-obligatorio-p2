@@ -86,11 +86,11 @@ public class Jugador implements Comparable<Jugador>{
     @Override
 
     public String toString() {
-        return this.getAlias() + " Partidas ganadas: " + this.getPartidasGanadas();
+        return this.getAlias() + " - Partidas ganadas: " + this.getPartidasGanadas();
     }
     
     public int compareTo(Jugador unJugador){
-        return (int) (unJugador.getPartidasGanadas() - this.getPartidasGanadas());
+        return (unJugador.getPartidasGanadas() - this.getPartidasGanadas());
     }
 
     public boolean equals(Object obj) {

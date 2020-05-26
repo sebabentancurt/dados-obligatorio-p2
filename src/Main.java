@@ -11,6 +11,7 @@
 import logica.Sistema;
 import dominio.Tablero;
 import interfaz.Consola;
+import dominio.Jugador;
 
 public class Main {
 
@@ -22,7 +23,8 @@ public class Main {
         Sistema s = new Sistema();
         Consola consola = new Consola();
         Tablero tablero = new Tablero();
-
+        s.agregarJugador(new Jugador("seba",21,"sebaalias"));
+        s.agregarJugador(new Jugador("mateo",27,"Mateoalias"));
         consola.saludar();
         consola.menu(s);
         

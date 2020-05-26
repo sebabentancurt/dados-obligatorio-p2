@@ -13,6 +13,7 @@ import helper.Color;
 import java.util.ArrayList;
 import logica.Partida;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import logica.Sistema;
 
@@ -43,7 +44,7 @@ public class Consola {
                 break;
             case 2:
                 if (unSistema.getListaJugadores().size() > 1) {
-                    crearPartida(unSistema);
+                    unSistema.crearPartida();
                 } else {
                     printlnRed("Debe registrar al menos 2 jugadores para comenzar el juego.");
                 }
@@ -54,12 +55,16 @@ public class Consola {
             case 3:
                 printlnGreen("Ranking de jugadores:");
                 unSistema.listaOrdenada();
-                imprimirListaJugadores(unSistema);
+                unSistema.imprimirListaJugadores();
                 esperarParaContinuar();
                 menu(unSistema);
                 break;
             case 4:
                 printlnGreen("Gracias por jugar, hasta la vuelta ;)");
+                break;
+            default:
+                printlnRed("Ha ocurrido un error");
+                menu(unSistema);
                 break;
         }
     }
@@ -85,6 +90,8 @@ public class Consola {
         return scan.nextInt();
     }
 
+    
+
     public static void esperarParaContinuar() {
         Consola.println("");
         Consola.printYellow("Presiona \"ENTER\" para continuar...");
@@ -95,12 +102,31 @@ public class Consola {
     public static String leerLetra(String message) {
         Scanner scan = new Scanner(System.in);
         Consola.printlnYellow(message);
+        Pattern pattern = Pattern.compile("[A-Za-z]");
 
-        while (!scan.hasNext("[a-zA-Z]")) {
+        while (!scan.hasNext(pattern)) {
             Consola.printlnRed("Entrada no es una letra. Intente nuevamente.");
             scan.next();
         }
-        return scan.nextLine();
+        return scan.next();
+    }
+
+    public static Boolean leerConfirmacion(String message) {
+        Scanner scan = new Scanner(System.in);
+        Consola.printlnYellow(message + " S/N");
+        Pattern pattern = Pattern.compile("[SsNn]");
+        Boolean confirmado = false;
+
+        while (!scan.hasNext(pattern)) {
+            Consola.printlnRed("Opción no valida. Intente nuevamente.");
+            scan.next();
+        }
+
+        String confirmacion = scan.next();
+        if(confirmacion.equals("S") || confirmacion.equals("s")){
+            confirmado = true;
+        }
+        return confirmado;
     }
 
     /**
@@ -130,99 +156,21 @@ public class Consola {
         return opcion;
     }
 
-    public void crearPartida(Sistema unSistema) {
-        Jugador[] jugadoresSeleccionados = seleccionarJugadores(unSistema);
-        String[] letrasSeleccionadas = seleccionarLetras();
-        for (int i = 0; i < jugadoresSeleccionados.length; i++){
-            jugadoresSeleccionados[i].setLetraParaJugar(letrasSeleccionadas[i]);
-        }
-        boolean modoTest = consultaModoTest();
 
-        Partida partida = new Partida(jugadoresSeleccionados[0], jugadoresSeleccionados[1], modoTest);
-        partida.jugar(this);
 
-    }
+    
 
-    /**
-     * Retorna dos jugadores seleccionados de la lista completa de jugadores
-     *
-     * @param unSistema
-     * @return
-     */
-    public Jugador[] seleccionarJugadores(Sistema unSistema) {
+    public static boolean consultaModoTest() {
+        boolean modoTest = Consola.leerConfirmacion("¿Desea activar el modo test?");
 
-        Jugador[] jugadoresSeleccionados = new Jugador[2];
-
-        imprimirListaJugadores(unSistema);
-
-        Integer seleccionRojo = Consola.leerOpcion("SELECCIONE JUGADOR ROJO", 1, unSistema.getListaJugadores().size());
-        Jugador jugadorRojo = unSistema.getListaJugadores().get(seleccionRojo - 1);
-
-        Integer seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
-        while (seleccionRojo.equals(seleccionAzul)) {
-            Consola.printlnRed("El jugador ya ha sido seleccionado. Intente nuevamente");
-            seleccionAzul = Consola.leerOpcion("SELECCIONE JUGADOR AZUL", 1, unSistema.getListaJugadores().size());
-        }
-        Jugador jugadorAzul = unSistema.getListaJugadores().get(seleccionRojo - 1);
-
-        jugadoresSeleccionados[0] = jugadorRojo;
-        jugadoresSeleccionados[1] = jugadorAzul;
-
-        return jugadoresSeleccionados;
-    }
-
-    /**
-     * Imprime la lista de jugadores de no ser vacia
-     *
-     * @param unSistema
-     */
-    public void imprimirListaJugadores(Sistema unSistema) {
-        if (unSistema.getListaJugadores().isEmpty()) {
-            printlnRed("No existen jugadores registrados.");
-        } else {
-            for (int i = 0; i < unSistema.getListaJugadores().size(); i++) {
-                println((i + 1) + ". " + unSistema.getListaJugadores().get(i));
-            }
-        }
-    }
-
-    public String[] seleccionarLetras() {
-        Scanner in = new Scanner(System.in);
-        String[] letrasSeleccionadas = new String[2];
-
-        String letraRojo = Consola.leerLetra("Ingrese letra jugador Rojo");
-
-        String letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
-        while (letraAzul.equals(letraRojo)) {
-            Consola.printlnRed("Los jugadores deben tener letra diferente. Intente nuevamente.");
-            letraAzul = Consola.leerLetra("Ingrese letra jugador Azul");
-        }
-
-        letrasSeleccionadas[0] = letraRojo;
-        letrasSeleccionadas[1] = letraAzul;
-
-        return letrasSeleccionadas;
-    }
-
-    public boolean consultaModoTest() {
-        boolean modoTest = false;
-        String respuesta = "";
-        Scanner in = new Scanner(System.in);
-
-        println("DESEA ACTIVAR MODO TEST? S/N");
-        while (!respuesta.equalsIgnoreCase("S") && !respuesta.equalsIgnoreCase("N")) {
-            respuesta = in.nextLine();
-        }
-
-        if (respuesta.equals("S")) {
-            modoTest = true;
-            println("MODO TEST ACTIVADO");
+        if (modoTest) {
+            Consola.printlnGreen("Modo test activado");
         }
 
         return modoTest;
     }
 
-    public void mostrarDados(ArrayList<Integer> dados) {
+    public static void mostrarDados(ArrayList<Integer> dados) {
         print("base: " + dados.get(0) + " ");
 
         print("extras: ");
@@ -234,7 +182,7 @@ public class Consola {
     /**
      * Imprime la matriz formateada
      */
-    public void mostrarTablero(String[][] matriz) {
+    public static void mostrarTablero(String[][] matriz) {
         for (int i = 0; i < Tablero.FILAS; i++) {
             for (int j = 0; j < Tablero.COLUMNAS; j++) {
                 Consola.print(String.format("%15s", matriz[i][j]) +" ");
