@@ -49,6 +49,7 @@ public class Partida {
 
     /**
      * Obtiene un jugador a parti de su color
+     *
      * @param color
      * @return
      */
@@ -112,7 +113,8 @@ public class Partida {
     }
 
     /**
-     * Mientras el tablero este no este completo o ningun jugador abandone, se pide jugada a cada jugador
+     * Mientras el tablero este no este completo o ningun jugador abandone, se
+     * pide jugada a cada jugador
      */
     public void jugar() {
         String colorJugador = "rojo";
@@ -126,7 +128,7 @@ public class Partida {
 
             if (colorJugador.equals("rojo")) {
                 colorJugador = "azul";
-            }else{
+            } else {
                 colorJugador = "rojo";
             }
         }
@@ -168,25 +170,25 @@ public class Partida {
             // Caso numeros
             default:
                 try {
-                    String[] dadosSeleccionados = respuesta.split(" ");
+                String[] dadosSeleccionados = respuesta.split(" ");
 
-                    for (String dadoSeleccionado : dadosSeleccionados) {
-                        jugada.add(Integer.parseInt(dadoSeleccionado));
-                    }
-                    this.jugarDados(unJugador, jugada, dados, false);
-
-                } catch (NumberFormatException e) {
-                    Consola.printlnRed("Jugada no valida. Intente nuevamente.");
-                    Consola.println("");
-                    this.pedirJugada(dados, unJugador);
+                for (String dadoSeleccionado : dadosSeleccionados) {
+                    jugada.add(Integer.parseInt(dadoSeleccionado));
                 }
+                this.jugarDados(unJugador, jugada, dados, false);
 
-                break;
+            } catch (NumberFormatException e) {
+                Consola.printlnRed("Jugada no valida. Intente nuevamente.");
+                Consola.println("");
+                this.pedirJugada(dados, unJugador);
+            }
+
+            break;
         }
 
     }
 
-    public void jugarDados(Jugador unJugador, ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase){
+    public void jugarDados(Jugador unJugador, ArrayList<Integer> jugada, ArrayList<Integer> dados, boolean dadoBase) {
         Integer posicion = posicionJugada(jugada, new ArrayList<Integer>(dados), dadoBase);
         boolean jugadaValida = !posicion.equals(-1);
         if (jugadaValida && aplicarJugadaEnTablero(unJugador, posicion)) {
@@ -219,7 +221,7 @@ public class Partida {
 
     /**
      * Se fija si efectivamente salieron esos dados y si la posicion esta vacia
-     * 
+     *
      * @param jugada
      * @param dados
      * @param dadoBase
@@ -258,10 +260,14 @@ public class Partida {
         return ingreso;
     }
 
-    public void mostrarPuntaje() {
-        setPuntajeRojo(tablero.letraEnSecuencia(jugadorRojo.getLetraParaJugar(), "red"));
-        setPuntajeAzul(tablero.letraEnSecuencia(jugadorAzul.getLetraParaJugar(), "blue"));
+    public void calcularPuntaje() {
+        int puntajeRojo = this.tablero.letraEnSecuencia(this.getJugadorRojo().getLetraParaJugar(), "red");
+        int puntajeAzul = this.tablero.letraEnSecuencia(this.getJugadorAzul().getLetraParaJugar(), "blue");
+        
+        this.mostrarPuntaje();
+    }
 
+    public void mostrarPuntaje() {
         Consola.printlnGreen("Puntaje:");
         Consola.println(jugadorRojo.getAlias() + ": " + this.getPuntajeRojo());
         Consola.println(jugadorAzul.getAlias() + ": " + this.getPuntajeAzul());
