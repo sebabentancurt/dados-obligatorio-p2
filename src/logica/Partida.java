@@ -235,6 +235,7 @@ public class Partida {
     }
 
     public void abandonar(Jugador unJugador) {
+        this.mostrarPuntaje();
         this.setAbandono(true);
         if (unJugador.equals(this.getJugadorRojo())) {
             this.setPuntajeRojo(-1);
@@ -313,6 +314,7 @@ public class Partida {
     }
 
     public void terminarPartida() {
+        this.mostrarPuntaje();
         this.getJugadorRojo().setPartidasJugadas(this.getJugadorRojo().getPartidasJugadas() + 1);
         this.getJugadorAzul().setPartidasJugadas(this.getJugadorAzul().getPartidasJugadas() + 1);
 
