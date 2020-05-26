@@ -20,12 +20,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         Sistema s = new Sistema();
         Consola consola = new Consola();
         Tablero tablero = new Tablero();
-        s.agregarJugador(new Jugador("seba",21,"sebaalias"));
-        s.agregarJugador(new Jugador("mateo",27,"Mateoalias"));
+        //s.agregarJugador(new Jugador("seba",21,"sebaalias"));
+        //s.agregarJugador(new Jugador("mateo",27,"Mateoalias"));
         consola.saludar();
         consola.menu(s);
         
